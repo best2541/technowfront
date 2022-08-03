@@ -49,16 +49,25 @@ import SignUp from "layouts/authentication/sign-up";
 import Icon from "@mui/material/Icon";
 import AccountLayout from "layouts/accounts/AccountLayout";
 import StationRoutes from "layouts/station/StationRoutes";
+import MapLayout from "layouts/map/MapLayout";
 
 const routes = window.localStorage.getItem('accessToken') ? [
   {
     type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
+    name: "Map",
+    key: "map",
+    icon: <Icon fontSize="small">my_location</Icon>,
+    route: "/map/*",
+    component: <MapLayout />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   icon: <Icon fontSize="small">dashboard</Icon>,
+  //   route: "/dashboard",
+  //   component: <Dashboard />,
+  // },
   {
     type: "collapse",
     name: "Record",

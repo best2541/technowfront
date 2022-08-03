@@ -29,11 +29,13 @@
     "bootstrap": "^5.2.0",
     "chart.js": "3.4.1",
     "chroma-js": "2.4.2",
+    "leaflet": "^1.8.0",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-chartjs-2": "3.0.4",
     "react-dom": "17.0.2",
     "react-github-btn": "1.2.1",
+    "react-leaflet": "^4.0.1",
     "react-router-dom": "6.2.1",
     "react-scripts": "5.0.0",
     "react-table": "7.7.0",
@@ -55,16 +57,9 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ]
 }
