@@ -45,7 +45,7 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --max-old-space-size=16000 start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -59,7 +59,7 @@
   },
   "browserslist": [
     ">0.2%",
-        "not dead",
-        "not op_mini all"
-      ]
+    "not dead",
+    "not op_mini all"
+  ]
 }
