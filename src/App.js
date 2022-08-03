@@ -177,7 +177,7 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={window.localStorage.getItem('accessToken') ? < Navigate to="/dashboard" /> : < Navigate to="/authentication/sign-in" />} />
+        <Route path="*" element={window.localStorage.getItem('accessToken') ? < Navigate to="/map/*" /> : < Navigate to="/authentication/sign-in" />} />
       </Routes>
     </ThemeProvider>
   )
