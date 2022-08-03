@@ -64,7 +64,7 @@ function Basic() {
     console.log(rememberMe)
     window.localStorage.setItem('accessToken', 'sdlkfj3907lkl034k5lksdlkl')
     rememberMe && window.localStorage.setItem('remember', input.username)
-    window.location.href = '/dashboard'
+    window.location.href = '/map/*'
   }
 
   return (
