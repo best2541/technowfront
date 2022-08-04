@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -22,12 +22,12 @@ import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
-import MuiLink from "@mui/material/Link";
+// import MuiLink from "@mui/material/Link";
 
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
+// // @mui icons
+// import FacebookIcon from "@mui/icons-material/Facebook";
+// import GitHubIcon from "@mui/icons-material/GitHub";
+// import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -40,7 +40,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import MDAlert from "components/MDAlert";
+// import MDAlert from "components/MDAlert";
 
 function Basic() {
   const usernameRef = useRef()
@@ -49,7 +49,6 @@ function Basic() {
 
   const inputChange = (event) => {
     const { name, value } = event.target
-    console.log(usernameRef)
     setInput({
       ...input,
       [name]: value
@@ -60,8 +59,6 @@ function Basic() {
 
   const loginClick = (event) => {
     event.preventDefault()
-    console.log(input)
-    console.log(rememberMe)
     window.localStorage.setItem('accessToken', 'sdlkfj3907lkl034k5lksdlkl')
     rememberMe && window.localStorage.setItem('remember', input.username)
     window.location.href = '/map/*'

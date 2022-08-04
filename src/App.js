@@ -126,13 +126,6 @@ export default function App() {
       return null;
     });
 
-  const ProtectedRoute = ({ user, children }) => {
-    if (!window.localStorage.getItem('accessToken')) {
-      return <Navigate to="/landing" replace />;
-    }
-
-    return children;
-  };
   const configsButton = (
     <MDBox
       display="flex"

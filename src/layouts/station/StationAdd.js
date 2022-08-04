@@ -11,11 +11,6 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 
 const StationAdd = () => {
-  const [age, setAge] = React.useState('');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>

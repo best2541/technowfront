@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -22,15 +22,11 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
-import MDBadge from "components/MDBadge";
+// import MDAvatar from "components/MDAvatar";
+// import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DataTable from "examples/Tables/DataTable";
-
-// Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
 import MDButton from "components/MDButton";
 
 function Station() {
@@ -57,8 +53,6 @@ function Station() {
             )
         }
     ]
-    //   const { columns, rows } = authorsTableData();
-    const { columns: pColumns, rows: pRows } = projectsTableData();
 
     return (
         <MDBox pt={6} pb={3}>
