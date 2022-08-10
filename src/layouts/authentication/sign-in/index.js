@@ -40,11 +40,13 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import axios from "axios";
 // import MDAlert from "components/MDAlert";
 
 function Basic() {
   const usernameRef = useRef()
   const [input, setInput] = useState({ username: '', password: '' })
+  const [msg, setMsg] = useState(false)
   const [rememberMe, setRememberMe] = useState(false);
 
   const inputChange = (event) => {
@@ -57,11 +59,22 @@ function Basic() {
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
-  const loginClick = (event) => {
+  const loginClick = async (event) => {
     event.preventDefault()
-    window.localStorage.setItem('accessToken', 'sdlkfj3907lkl034k5lksdlkl')
-    rememberMe && window.localStorage.setItem('remember', input.username)
-    window.location.href = '/map/*'
+    await setMsg(false)
+    axios.post(`${process.env.REACT_APP_API}/auth/login`, {
+      username: input.username,
+      password: input.password
+    }).then(result => {
+      if (!result.data.err) {
+        window.localStorage.setItem('accessToken', result.data)
+        rememberMe && window.localStorage.setItem('remember', input.username)
+        window.location.href = '/map/*'
+      } else {
+        setMsg(true)
+      }
+    })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -81,9 +94,9 @@ function Basic() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             TECHNOW
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
-            {/* <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+          {/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+            <Grid item xs={2}>
+              <MDTypography  href="#" variant="body1" color="white">
                 <FacebookIcon color="inherit" />
               </MDTypography>
             </Grid>
@@ -96,9 +109,16 @@ function Basic() {
               <MDTypography component={MuiLink} href="#" variant="body1" color="white">
                 <GoogleIcon color="inherit" />
               </MDTypography>
-            </Grid> */}
-          </Grid>
+            </Grid>
+          </Grid> */}
         </MDBox>
+        {msg &&
+          <MDBox mt={3} mb={1} textAlign="center">
+            <MDTypography variant="button" color="error">
+              username or password is incorrect
+            </MDTypography>
+          </MDBox>
+        }
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form" onSubmit={loginClick}>
             <MDBox mb={2}>
@@ -107,7 +127,7 @@ function Basic() {
             <MDBox mb={2}>
               <MDInput name='password' type="password" label="Password" fullWidth onChange={inputChange} />
             </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
+            {/* <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
               <MDTypography
                 variant="button"
@@ -118,7 +138,7 @@ function Basic() {
               >
                 &nbsp;&nbsp;Remember me
               </MDTypography>
-            </MDBox>
+            </MDBox> */}
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="info" fullWidth type='submit'>
                 sign in
