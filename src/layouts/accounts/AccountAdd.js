@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -14,14 +14,33 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import axios from 'axios';
 
 
 const AccountAdd = () => {
   const [age, setAge] = React.useState('');
+  const [input, setInput] = useState({})
 
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+
+  const inputChange = (event) => {
+    const { name, value } = event.target
+    setInput({
+      ...input,
+      [name]: value
+    })
+  }
+
+  const createClick = (event) => {
+    event.preventDefault()
+    axios.post(`${process.env.REACT_APP_API}/account/new`, input, {
+      headers: {
+        'authorization': `token ${localStorage.getItem('accessToken')}`
+      }
+    }).then(console.log)
+  }
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>
@@ -45,32 +64,38 @@ const AccountAdd = () => {
             <MDBox pt={4} pb={3} px={3}>
               <MDBox component="form" role="form">
                 <MDBox mb={2}>
-                  <MDInput name='username' type="text" label="Username" variant="standard" fullWidth />
+                  <MDInput name='username' type="text" label="Username" variant="standard" fullWidth
+                    onChange={inputChange}
+                  />
                 </MDBox>
                 <MDBox mb={2}>
-                  <MDInput name='password' type="password" label="Password" variant="standard" fullWidth />
+                  <MDInput name='password' type="password" label="Password" variant="standard" fullWidth
+                    onChange={inputChange}
+                  />
                 </MDBox>
                 <MDBox mb={2}>
-                  <MDInput name='confirmPassword' type="password" label="Confirm Password" variant="standard" fullWidth />
+                  <MDInput name='confirmPassword' type="password" label="Confirm Password" variant="standard" fullWidth
+                    onChange={inputChange}
+                  />
                 </MDBox>
                 {/* <MDBox mb={2}> */}
                 <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
                   <InputLabel id="demo-simple-select-standard-label">Role</InputLabel>
                   <Select
+                    name='role'
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
-                    value={age}
-                    onChange={handleChange}
+                    onChange={inputChange}
                     label="Age"
                     fullWidth
                   >
-                    <MenuItem value={10}>Monitor</MenuItem>
-                    <MenuItem value={20}>Maintenance Technician</MenuItem>
+                    <MenuItem value={1}>Monitor</MenuItem>
+                    <MenuItem value={2}>Maintenance Technician</MenuItem>
                   </Select>
                 </FormControl>
               </MDBox>
               <MDBox mt={4} mb={1}>
-                <MDButton variant="gradient" color="success" fullWidth>
+                <MDButton variant="gradient" color="success" fullWidth onClick={createClick}>
                   Create
                 </MDButton>
                 {/* </MDBox> */}
