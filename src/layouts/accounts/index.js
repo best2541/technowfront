@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { Link } from 'react-router-dom';
 
 // @mui material components
@@ -28,11 +13,77 @@ import MDButton from "components/MDButton";
 import DataTable from "examples/Tables/DataTable";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-// import projectsTableData from "layouts/tables/data/projectsTableData";
+// import authorsTableData from "layouts/tables/data/authorsTableData";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import MDBadge from 'components/MDBadge';
+
+const column = [
+  { Header: "author", accessor: "author", width: "45%", align: "left" },
+  { Header: "role", accessor: "role", align: "left" },
+  { Header: "status", accessor: "status", align: "center" },
+  { Header: "employed", accessor: "employed", align: "center" },
+  { Header: "action", accessor: "action", align: "center" },
+]
+const columns = [
+  { Header: 'username', accessor: 'username', align: 'left' },
+  { Header: 'role', accessor: 'role', align: 'center' },
+  { Header: 'action', accessor: 'action', align: "right" }
+];
+const rows = [
+  {
+    lastName: <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+      23/04/18
+    </MDTypography>,
+    firstName: <MDBox ml={-1}>
+      <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+    </MDBox>,
+    age: 35
+  },
+];
 
 function Accounts() {
-  const { columns, rows } = authorsTableData();
+  // const { columns, rows } = authorsTableData();
+  const [datas, setDatas] = useState([])
+
+  const deleteClick = (username) => {
+    if (window.confirm(`DELETE ${username}`)) {
+      axios.post(`${process.env.REACT_APP_API}/account/delete/${username}`, '', {
+        headers: {
+          'authorization': `token ${localStorage.getItem('accessToken')}`
+        }
+      })
+        .then(() => setDatas(() => datas.filter(data => data.username != username)))
+    }
+  }
+
+  const row = datas?.map(data => (
+    {
+      username: <MDTypography variant="button" fontWeight="medium">
+        {data.username}
+      </MDTypography>,
+      role: <MDBox ml={-1}>
+        <MDBadge badgeContent={data.role == 1 ? 'monitor' : 'maintainance'} color={data.role == 1 ? 'success' : 'warning'} variant="gradient" size="sm" />
+      </MDBox>,
+      action: <>
+        <MDTypography className='m-1' component="a" href={`/accounts/edit/${data.username}`} variant="caption" color="text" fontWeight="medium">
+          Edit
+        </MDTypography>
+        <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.username)} variant="caption" color="text" fontWeight="medium">
+          Delete
+        </MDTypography>
+      </>
+    }
+  ))
+  useEffect(() => {
+    axios.post(`${process.env.REACT_APP_API}/account/index`, '', {
+      headers: {
+        'authorization': `token ${localStorage.getItem('accessToken')}`
+      }
+    }).then(result => {
+      setDatas(result.data.users)
+    })
+  }, []);
   // const { columns: pColumns, rows: pRows } = projectsTableData();
 
   return (
@@ -66,15 +117,17 @@ function Accounts() {
                 </Link>
               </Grid>
             </Grid>
-            <MDBox pt={3}>
-              <DataTable
-                table={{ columns, rows }}
-                isSorted={false}
-                entriesPerPage={false}
-                showTotalEntries={false}
-                noEndBorder
-              />
-            </MDBox>
+            {datas.length > 0 &&
+              <MDBox pt={3}>
+                <DataTable
+                  table={{ columns, rows: row }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            }
           </Card>
         </Grid>
       </Grid>

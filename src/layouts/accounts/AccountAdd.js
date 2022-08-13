@@ -18,12 +18,8 @@ import axios from 'axios';
 
 
 const AccountAdd = () => {
-  const [age, setAge] = React.useState('');
   const [input, setInput] = useState({})
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
   const inputChange = (event) => {
     const { name, value } = event.target
@@ -39,7 +35,11 @@ const AccountAdd = () => {
       headers: {
         'authorization': `token ${localStorage.getItem('accessToken')}`
       }
-    }).then(console.log)
+    }).then(result => {
+      if (!result.data.err) {
+        alert('Creted')
+      }
+    })
   }
   return (
     <MDBox pt={6} pb={3}>

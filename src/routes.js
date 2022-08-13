@@ -67,14 +67,14 @@ const routes = window.localStorage.getItem('accessToken') ? [
   //   route: "/dashboard",
   //   component: <Dashboard />,
   // },
-  // {
-  //   type: "collapse",
-  //   name: "Record",
-  //   key: "billing",
-  //   icon: <Icon fontSize="small">receipt_long</Icon>,
-  //   route: "/billing",
-  //   component: <Billing />,
-  // },
+  {
+    type: "collapse",
+    name: "Record",
+    key: "billing",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/billing",
+    component: <Billing />,
+  },
   // {
   //   type: "collapse",
   //   name: "Notifications",
