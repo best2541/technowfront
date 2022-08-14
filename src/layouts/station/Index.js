@@ -28,15 +28,42 @@ import MDTypography from "components/MDTypography";
 // Material Dashboard 2 React example components
 import DataTable from "examples/Tables/DataTable";
 import MDButton from "components/MDButton";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Station() {
+    const [datas, setDatas] = useState([])
+
+    const deleteClick = (id) => {
+        axios.post(`${process.env.REACT_APP_API}/station/delete/${id}`, '', {
+            headers: {
+                'authorization': `token ${localStorage.getItem('accessToken')}`
+            }
+        }).then(() => setDatas(() => datas.filter(data => data.id != id)))
+    }
     const columns = [
         { Header: "Station", accessor: "station", width: "45%", align: "left" },
-        { Header: "Address", accessor: "address", align: "left" },
         { Header: "Url", accessor: "url", align: "center" },
-        // { Header: "employed", accessor: "employed", align: "center" },
         { Header: "action", accessor: "action", align: "center" },
     ]
+
+    const row = datas.map(data => (
+        {
+            station: < MDTypography variant="button" fontWeight="medium" >
+                {data?.name}
+            </MDTypography >,
+            url: data?.url,
+            action: <>
+                <MDTypography className='m-1' component="a" href={`/accounts/edit/${data.username}`} variant="caption" color="text" fontWeight="medium">
+                    Edit
+                </MDTypography>
+                <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.id)} variant="caption" color="text" fontWeight="medium">
+                    Delete
+                </MDTypography>
+            </>
+        }
+
+    ))
     const rows = [
         {
             station: (
@@ -54,6 +81,19 @@ function Station() {
         }
     ]
 
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/station/index`, {
+            headers: {
+                'authorization': `token ${localStorage.getItem('accessToken')}`
+            }
+        }).then(result => {
+            if (!result.data.err) {
+                setDatas(result.data.stations)
+            } else {
+                window.localStorage.removeItem('accessToken')
+            }
+        })
+    }, [])
     return (
         <MDBox pt={6} pb={3}>
             <Grid container spacing={6}>
@@ -85,15 +125,17 @@ function Station() {
                                 </Link>
                             </Grid>
                         </Grid>
-                        <MDBox pt={3}>
-                            <DataTable
-                                table={{ columns, rows }}
-                                isSorted={false}
-                                entriesPerPage={false}
-                                showTotalEntries={false}
-                                noEndBorder
-                            />
-                        </MDBox>
+                        {datas?.length > 0 &&
+                            <MDBox pt={3}>
+                                <DataTable
+                                    table={{ columns, rows: row }}
+                                    isSorted={false}
+                                    entriesPerPage={false}
+                                    showTotalEntries={false}
+                                    noEndBorder
+                                />
+                            </MDBox>
+                        }
                     </Card>
                 </Grid>
             </Grid>

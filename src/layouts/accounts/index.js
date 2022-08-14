@@ -18,28 +18,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import MDBadge from 'components/MDBadge';
 
-const column = [
-  { Header: "author", accessor: "author", width: "45%", align: "left" },
-  { Header: "role", accessor: "role", align: "left" },
-  { Header: "status", accessor: "status", align: "center" },
-  { Header: "employed", accessor: "employed", align: "center" },
-  { Header: "action", accessor: "action", align: "center" },
-]
 const columns = [
   { Header: 'username', accessor: 'username', align: 'left' },
   { Header: 'role', accessor: 'role', align: 'center' },
   { Header: 'action', accessor: 'action', align: "right" }
-];
-const rows = [
-  {
-    lastName: <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-      23/04/18
-    </MDTypography>,
-    firstName: <MDBox ml={-1}>
-      <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
-    </MDBox>,
-    age: 35
-  },
 ];
 
 function Accounts() {

@@ -9,6 +9,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import axios from 'axios';
 
 const StationAdd = () => {
   const [input, setInput] = useState({})
@@ -19,6 +20,22 @@ const StationAdd = () => {
       ...input,
       [name]: value
     })
+  }
+  const addClick = () => {
+    let formData = new FormData()
+    formData.append('name', input?.name)
+    formData.append('tel', input?.tel)
+    formData.append('url', input?.url)
+    formData.append('long', input?.long)
+    formData.append('lati', input?.lati)
+    formData.append('img_name', input?.name)
+    formData.append('file', input?.img)
+    axios.post(`${process.env.REACT_APP_API}/station/new`, formData, {
+      headers: {
+        'authorization': `token ${localStorage.getItem('accessToken')}`
+      }
+    }).then(result => console.log(result.data))
+      .catch(err => console.log(err))
   }
   return (
     <MDBox pt={6} pb={3}>
@@ -46,6 +63,9 @@ const StationAdd = () => {
                   <MDInput name='name' type="text" label="Station Name" variant="standard" fullWidth onChange={inputChange} />
                 </MDBox>
                 <MDBox mb={2}>
+                  <MDInput name='tel' type="tel" label="Tel" variant="standard" fullWidth onChange={inputChange} />
+                </MDBox>
+                <MDBox mb={2}>
                   <MDInput name='url' type="text" label="Url" variant="standard" fullWidth onChange={inputChange} />
                 </MDBox>
                 <Grid container spacing={3}>
@@ -61,8 +81,15 @@ const StationAdd = () => {
                   </Grid>
                 </Grid>
               </MDBox>
+              <MDBox>
+                <span style={{ color: 'white' }}>IMG : </span>
+                <input name='img' type="file" style={{ color: 'white' }} onChange={(event) => setInput({
+                  ...input,
+                  img: event.target.files[0]
+                })} />
+              </MDBox>
               <MDBox mt={4} mb={1}>
-                <MDButton variant="gradient" color="success" onClick={() => console.log(input)} fullWidth>
+                <MDButton variant="gradient" color="success" onClick={() => addClick()} fullWidth>
                   Create
                 </MDButton>
               </MDBox>
