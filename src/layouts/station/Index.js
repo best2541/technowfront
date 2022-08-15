@@ -39,7 +39,12 @@ function Station() {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
-        }).then(() => setDatas(() => datas.filter(data => data.id != id)))
+        })
+            .then(() => setDatas(() => datas.filter(data => data.id != id)))
+            .catch(() => {
+                localStorage.removeItem('accessToken')
+                window.location.href = '/'
+            })
     }
     const columns = [
         { Header: "Station", accessor: "station", width: "45%", align: "left" },
@@ -54,7 +59,7 @@ function Station() {
             </MDTypography >,
             url: data?.url,
             action: <>
-                <MDTypography className='m-1' component="a" href={`/accounts/edit/${data.username}`} variant="caption" color="text" fontWeight="medium">
+                <MDTypography className='m-1' component="a" href={`/station/edit/${data.id}`} variant="caption" color="text" fontWeight="medium">
                     Edit
                 </MDTypography>
                 <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.id)} variant="caption" color="text" fontWeight="medium">
@@ -64,22 +69,6 @@ function Station() {
         }
 
     ))
-    const rows = [
-        {
-            station: (
-                <MDTypography variant="button" fontWeight="medium">
-                    name
-                </MDTypography>
-            ),
-            address: '77/77 saimai',
-            url: 'www.google.com',
-            action: (
-                <MDTypography component="a" href="/accounts/edit" variant="caption" color="text" fontWeight="medium">
-                    Edit
-                </MDTypography>
-            )
-        }
-    ]
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/station/index`, {
@@ -92,6 +81,9 @@ function Station() {
             } else {
                 window.localStorage.removeItem('accessToken')
             }
+        }).catch(() => {
+            localStorage.removeItem('accessToken')
+            window.location.href = '/'
         })
     }, [])
     return (

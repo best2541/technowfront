@@ -36,6 +36,10 @@ function Accounts() {
         }
       })
         .then(() => setDatas(() => datas.filter(data => data.username != username)))
+        .catch(() => {
+          localStorage.removeItem('accessToken')
+          window.location.href = '/'
+        })
     }
   }
 
@@ -65,6 +69,10 @@ function Accounts() {
     }).then(result => {
       setDatas(result.data.users)
     })
+      .catch(() => {
+        localStorage.removeItem('accessToken')
+        window.location.href = '/'
+      })
   }, []);
   // const { columns: pColumns, rows: pRows } = projectsTableData();
 

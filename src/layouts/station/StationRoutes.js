@@ -5,6 +5,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Station from './Index';
 import StationAdd from './StationAdd';
+import StationEdit from './StationEdit';
 
 const StationRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const StationRoutes = () => {
             <Routes>
                 <Route path='/*' element={<Station />} />
                 <Route path='/add' element={<StationAdd />} />
+                <Route path='/edit/:id' element={<StationEdit />} />
             </Routes >
             <Footer />
         </DashboardLayout>

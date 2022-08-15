@@ -47,12 +47,12 @@ const AccountEdit = () => {
         'authorization': `token ${localStorage.getItem('accessToken')}`
       }
     }).then(result => {
-      console.log(datas)
-      console.log(result)
       if (!result.data.err) {
-        console.log(result.data)
         setBtn(false)
       }
+    }).catch(() => {
+      localStorage.removeItem('accessToken')
+      window.location.href = '/'
     })
   }
 
@@ -64,9 +64,10 @@ const AccountEdit = () => {
     }).then(result => {
       if (!result.data.err) {
         setDatas(result.data[0])
-      } else {
-        console.log(result.data)
       }
+    }).catch(() => {
+      localStorage.removeItem('accessToken')
+      window.location.href = '/'
     })
   }, [])
   return (

@@ -39,6 +39,9 @@ const AccountAdd = () => {
       if (!result.data.err) {
         alert('Creted')
       }
+    }).catch(() => {
+      localStorage.removeItem('accessToken')
+      window.location.href = '/'
     })
   }
   return (

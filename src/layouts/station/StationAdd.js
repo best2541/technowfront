@@ -34,8 +34,11 @@ const StationAdd = () => {
       headers: {
         'authorization': `token ${localStorage.getItem('accessToken')}`
       }
-    }).then(result => console.log(result.data))
-      .catch(err => console.log(err))
+    }).then(result => window.location.href = `/station/edit/${result.data}`)
+      .catch(() => {
+        localStorage.removeItem('accessToken')
+        window.location.href = '/'
+      })
   }
   return (
     <MDBox pt={6} pb={3}>
