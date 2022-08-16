@@ -12,6 +12,9 @@ import MDButton from "components/MDButton";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Contract from './Contract';
+import Maintain from './Maintain';
+import ContractList from './ContractList';
+import MaintainList from './MaintainList';
 
 const StationEdit = () => {
     const [input, setInput] = useState([])
@@ -124,15 +127,44 @@ const StationEdit = () => {
                                         img: event.target.files[0]
                                     })} />
                                 </MDBox>
-                                {display.contract &&
-                                    <div className='popup' onClick={() => setDisplay({ ...display, contract: false })}>
-                                        <Contract />
-                                    </div>
+                                {display?.contractList &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, contractList: false })}>
+                                        </div>
+                                        <ContractList onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
+                                {display?.contract &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, contract: false })}>
+                                        </div>
+                                        <Contract onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
+                                {display?.maintainList &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, maintainList: false })}>
+                                        </div>
+                                        <MaintainList onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
+                                {display?.maintain &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, maintain: false })}>
+                                        </div>
+                                        <Maintain onClick={(event) => event.stopPropagation()} />
+                                    </>
                                 }
                                 <MDBox mt={3} mb={1}>
                                     <div style={{ 'display': 'flex', 'justifyContent': 'space-around' }}>
-                                        <MDButton variant='gradient' color='primary' onClick={() => setDisplay({ ...display, contract: !display.contract })}>สัญญา</MDButton>
-                                        <MDButton variant='gradient' color='secondary'>ประวัติการซ่อมบำรุง</MDButton>
+                                        <div>
+                                            <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}>สัญญา</MDButton>
+                                            <MDButton variant='gradient' color='primary' onClick={() => setDisplay({ ...display, contract: !display.contract })}>เพิ่ม</MDButton>
+                                        </div>
+                                        <div>
+                                            <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}>ประวัติการซ่อมบำรุง</MDButton>
+                                            <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}>เพิ่ม</MDButton>
+                                        </div>
                                     </div>
                                 </MDBox>
                                 <MDBox mt={4} mb={1}>
@@ -145,7 +177,7 @@ const StationEdit = () => {
                     </Card>
                 </Grid>
             </Grid>
-        </MDBox>
+        </MDBox >
     )
 }
 

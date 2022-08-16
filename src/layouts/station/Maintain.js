@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MDButton from 'components/MDButton';
 import MDInput from 'components/MDInput';
 
-function Contract() {
+function Maintain() {
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     useEffect(() => {
@@ -13,13 +14,18 @@ function Contract() {
     }, [editorState])
     return (
         <div className='box'>
-            <label>สัญญา : </label> <input type='file' />
+            <Editor
+                // editorState={editorState}
+                wrapperClassName="editor-header"
+                editorClassName="editor"
+                onEditorStateChange={(event) => setEditorState(event)}
+            />
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
                 <span><label>วันที่หมดสัญญา : </label> <MDInput type='date' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} /></span>
+                <MDButton color='success' >New</MDButton>
             </div>
-            <MDButton style={{ position: 'absolute', bottom: 0, left: 0 }} color='success' fullWidth>New</MDButton>
         </div>
     )
 }
 
-export default Contract
+export default Maintain
