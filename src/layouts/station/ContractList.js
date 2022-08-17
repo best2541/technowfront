@@ -18,7 +18,7 @@ function ContractList({ id }) {
             })
     }, [])
     return (
-        <div className='box' style={{ 'overflow-y': 'scroll' }}>
+        <div className='box' style={{ 'overflow-y': 'auto' }}>
             {datas?.map(data => (
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
                     <span><label>วันที่ลงทะเบียน : {new Date(data.create_date).toLocaleDateString('th')}</label></span>

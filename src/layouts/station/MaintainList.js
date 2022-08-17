@@ -13,7 +13,7 @@ function MaintainList({ id }) {
         }).then(result => setDatas(result.data?.maintain))
     }, [])
     return (
-        <div className='box' style={{ 'overflow-y': 'scroll' }}>
+        <div className='box' style={{ 'overflow-y': 'auto' }}>
             {!select ? datas?.map(data => (
                 <>
                     <div key={data.id} style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
