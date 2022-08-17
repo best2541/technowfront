@@ -4,26 +4,34 @@ import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MDButton from 'components/MDButton';
-import MDInput from 'components/MDInput';
+import axios from 'axios';
 
-function Maintain() {
+function Maintain({ id }) {
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
-    useEffect(() => {
-        console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())))
-    }, [editorState])
+    const createClick = () => {
+        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { id: id, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
+            headers: {
+                'authorization': `token ${localStorage.getItem('accessToken')}`
+            }
+        }).then(result => {
+            if (!result.data.err) {
+                alert('เรียบร้อย')
+                setEditorState(EditorState.createEmpty())
+            }
+        })
+            .catch(err => console.log(err))
+    }
+
     return (
         <div className='box'>
             <Editor
-                // editorState={editorState}
+                editorState={editorState}
                 wrapperClassName="editor-header"
                 editorClassName="editor"
                 onEditorStateChange={(event) => setEditorState(event)}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
-                <span><label>วันที่หมดสัญญา : </label> <MDInput type='date' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} /></span>
-                <MDButton color='success' >New</MDButton>
-            </div>
+            <MDButton color='success' style={{ position: 'absolute', bottom: 0, left: 0 }} fullWidth onClick={() => createClick()}>New</MDButton>
         </div>
     )
 }

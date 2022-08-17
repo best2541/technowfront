@@ -84,13 +84,13 @@ const StationAdd = () => {
                   </Grid>
                 </Grid>
               </MDBox>
-              <MDBox>
+              {/* <MDBox>
                 <span style={{ color: 'white' }}>IMG : </span>
                 <input name='img' type="file" style={{ color: 'white' }} onChange={(event) => setInput({
                   ...input,
                   img: event.target.files[0]
                 })} />
-              </MDBox>
+              </MDBox> */}
               <MDBox mt={4} mb={1}>
                 <MDButton variant="gradient" color="success" onClick={() => addClick()} fullWidth>
                   Create
