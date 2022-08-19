@@ -19,12 +19,12 @@ import { useEffect, useState } from 'react';
 import MDBadge from 'components/MDBadge';
 
 const columns = [
-  { Header: 'username', accessor: 'username', align: 'left' },
-  { Header: 'role', accessor: 'role', align: 'center' },
+  { Header: 'URL', accessor: 'username', align: 'left' },
+  { Header: 'Alarm', accessor: 'role', align: 'center' },
   { Header: 'action', accessor: 'action', align: "right" }
 ];
 
-function Accounts() {
+function Record() {
   // const { columns, rows } = authorsTableData();
   const [datas, setDatas] = useState([])
 
@@ -94,7 +94,7 @@ function Accounts() {
                   coloredShadow="info"
                 >
                   <MDTypography variant="h6" color="white">
-                    Accounts
+                    Records
                   </MDTypography>
                 </MDBox>
               </Grid>
@@ -125,4 +125,4 @@ function Accounts() {
   );
 }
 
-export default Accounts;
+export default Record;

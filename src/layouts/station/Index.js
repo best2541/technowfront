@@ -123,7 +123,8 @@ function Station() {
                                     table={{ columns, rows: row }}
                                     isSorted={false}
                                     entriesPerPage={false}
-                                    showTotalEntries={false}
+                                    // showTotalEntries={false}
+                                    checkboxSelection
                                     noEndBorder
                                 />
                             </MDBox>
@@ -131,13 +132,6 @@ function Station() {
                     </Card>
                 </Grid>
             </Grid>
-            <ul class="pagination justify-content-center" style={{ "margin-top": "20px" }}>
-                <li class="page-item"><a class="page-link" href="#">Back</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
         </MDBox>
     );
 }

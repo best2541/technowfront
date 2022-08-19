@@ -26,15 +26,21 @@ const StationAdd = () => {
     formData.append('name', input?.name)
     formData.append('tel', input?.tel)
     formData.append('url', input?.url)
-    formData.append('long', input?.long)
-    formData.append('lati', input?.lati)
+    formData.append('long', input?.long || 0)
+    formData.append('lati', input?.lati || 0)
+    formData.append('key', input?.key)
     formData.append('img_name', input?.name)
     formData.append('file', input?.img)
     axios.post(`${process.env.REACT_APP_API}/station/new`, formData, {
       headers: {
         'authorization': `token ${localStorage.getItem('accessToken')}`
       }
-    }).then(result => window.location.href = `/station/edit/${result.data}`)
+    }).then(result => {
+      if (!result?.data?.err)
+        window.location.href = `/station/edit/${result.data}`
+      else
+        console.log(result.data)
+    })
       .catch(() => {
         localStorage.removeItem('accessToken')
         window.location.href = '/'
@@ -68,9 +74,18 @@ const StationAdd = () => {
                 <MDBox mb={2}>
                   <MDInput name='tel' type="tel" label="Tel" variant="standard" fullWidth onChange={inputChange} />
                 </MDBox>
-                <MDBox mb={2}>
-                  <MDInput name='url' type="text" label="Url" variant="standard" fullWidth onChange={inputChange} />
-                </MDBox>
+                <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                    <MDBox mb={2}>
+                      <MDInput name='url' type="text" label="Url" variant="standard" value={input.url} fullWidth onChange={inputChange} />
+                    </MDBox>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <MDBox mb={2}>
+                      <MDInput name='key' type="text" label="Key" variant="standard" value={input.key} fullWidth onChange={inputChange} />
+                    </MDBox>
+                  </Grid>
+                </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={6}>
                     <MDBox mb={2}>

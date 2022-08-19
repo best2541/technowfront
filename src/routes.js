@@ -49,6 +49,7 @@ import Icon from "@mui/material/Icon";
 import AccountLayout from "layouts/accounts/AccountLayout";
 import StationRoutes from "layouts/station/StationRoutes";
 import MapLayout from "layouts/map/MapLayout";
+import RecordLayout from "layouts/Record/RecordLayout";
 
 const routes = window.localStorage.getItem('accessToken') ? [
   {
@@ -72,8 +73,8 @@ const routes = window.localStorage.getItem('accessToken') ? [
     name: "Record",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
+    route: "/record",
+    component: <RecordLayout />,
   },
   // {
   //   type: "collapse",

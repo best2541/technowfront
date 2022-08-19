@@ -36,7 +36,8 @@ const StationEdit = () => {
             tel: input?.tel,
             url: input?.url,
             long: input?.long,
-            lati: input?.lati
+            lati: input?.lati,
+            key: input?.key
         }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
@@ -113,9 +114,18 @@ const StationEdit = () => {
                                     <MDBox mb={2}>
                                         <MDInput name='tel' type="tel" label="Tel" variant="standard" fullWidth value={input.tel} onChange={inputChange} />
                                     </MDBox>
-                                    <MDBox mb={2}>
-                                        <MDInput name='url' type="text" label="Url" variant="standard" value={input.url} fullWidth onChange={inputChange} />
-                                    </MDBox>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={6}>
+                                            <MDBox mb={2}>
+                                                <MDInput name='url' type="text" label="Url" variant="standard" value={input.url} fullWidth onChange={inputChange} />
+                                            </MDBox>
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <MDBox mb={2}>
+                                                <MDInput name='key' type="text" label="Key" variant="standard" value={input.key} fullWidth onChange={inputChange} />
+                                            </MDBox>
+                                        </Grid>
+                                    </Grid>
                                     <Grid container spacing={3}>
                                         <Grid item xs={6}>
                                             <MDBox mb={2}>
