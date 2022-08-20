@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -13,8 +13,24 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet'
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
+import axios from 'axios';
 function Map() {
+  const [datas, setDatas] = useState()
 
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API}/map/index`, {
+      headers: {
+        'authorization': `token ${localStorage.getItem('accessToken')}`
+      }
+    }).then(result => {
+      setDatas(result.data.stations)
+    })
+      .catch((err) => {
+        // localStorage.removeItem('accessToken')
+        // window.location.href = '/'
+        console.log(err)
+      })
+  }, [])
   return (
     <MDBox pt={6} pb={3}>
       <Grid container spacing={6}>
@@ -43,11 +59,17 @@ function Map() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-                  <Marker position={[12, 102]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                    <Popup>
-                      ชลบุลี
-                    </Popup>
-                  </Marker>
+                  {datas?.map(data => {
+                    // if (JSON?.parse(data.callback)) {
+                    return (
+                      <Marker position={[data.lati, data.long]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
+                        <Popup>
+                          {data.name}
+                        </Popup>
+                      </Marker>
+                    )
+                    // }
+                  })}
                 </MapContainer>
               </Grid>
             </Grid>

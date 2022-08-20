@@ -28,6 +28,7 @@ const StationEdit = () => {
         })
     }
     const addClick = () => {
+        console.log(input)
         let formData = new FormData()
         formData.append('img_name', input?.name)
         formData.append('file', input?.img)
@@ -42,7 +43,10 @@ const StationEdit = () => {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
-        }).then(result => console.log(result))
+        }).then(result => {
+            if (!result.data.err)
+                alert('เรียบร้อย')
+        })
             .catch(() => {
                 localStorage.removeItem('accessToken')
                 window.location.href = '/'
@@ -129,12 +133,12 @@ const StationEdit = () => {
                                     <Grid container spacing={3}>
                                         <Grid item xs={6}>
                                             <MDBox mb={2}>
-                                                <MDInput name='long' type="number" label="Longtitude" variant="standard" value={input.long} fullWidth onChange={inputChange} />
+                                                <MDInput name='lati' type="number" label="Latitude" variant="standard" value={input.lati} fullWidth onChange={inputChange} />
                                             </MDBox>
                                         </Grid>
                                         <Grid item xs={6}>
                                             <MDBox mb={2}>
-                                                <MDInput name='lati' type="number" label="Latitude" variant="standard" value={input.lati} fullWidth onChange={inputChange} />
+                                                <MDInput name='long' type="number" label="Longtitude" variant="standard" value={input.long} fullWidth onChange={inputChange} />
                                             </MDBox>
                                         </Grid>
                                     </Grid>

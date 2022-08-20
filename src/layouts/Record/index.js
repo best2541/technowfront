@@ -7,7 +7,6 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
 
 // Material Dashboard 2 React example components
 import DataTable from "examples/Tables/DataTable";
@@ -19,57 +18,38 @@ import { useEffect, useState } from 'react';
 import MDBadge from 'components/MDBadge';
 
 const columns = [
-  { Header: 'URL', accessor: 'username', align: 'left' },
+  { Header: 'name', accessor: 'name', align: 'left' },
   { Header: 'Alarm', accessor: 'role', align: 'center' },
   { Header: 'action', accessor: 'action', align: "right" }
 ];
 
 function Record() {
-  // const { columns, rows } = authorsTableData();
   const [datas, setDatas] = useState([])
-
-  const deleteClick = (username) => {
-    if (window.confirm(`DELETE ${username}`)) {
-      axios.post(`${process.env.REACT_APP_API}/account/delete/${username}`, '', {
-        headers: {
-          'authorization': `token ${localStorage.getItem('accessToken')}`
-        }
-      })
-        .then(() => setDatas(() => datas.filter(data => data.username != username)))
-        .catch(() => {
-          localStorage.removeItem('accessToken')
-          window.location.href = '/'
-        })
-    }
-  }
 
   const row = datas?.map(data => (
     {
-      username: <MDTypography variant="button" fontWeight="medium">
-        {data.username}
+      name: <MDTypography variant="button" fontWeight="medium">
+        {data.name}
       </MDTypography>,
       role: <MDBox ml={-1}>
-        <MDBadge badgeContent={data.role == 1 ? 'monitor' : 'maintainance'} color={data.role == 1 ? 'success' : 'warning'} variant="gradient" size="sm" />
+        <MDBadge badgeContent={JSON?.parse(data.callback)?.ALARM == '0' ? 'FINE' : 'ALERT'} color={JSON?.parse(data.callback)?.ALARM == '0' ? 'success' : 'warning'} variant="gradient" size="sm" />
       </MDBox>,
       action: <>
-        <MDTypography className='m-1' component="a" href={`/accounts/edit/${data.username}`} variant="caption" color="text" fontWeight="medium">
-          Edit
-        </MDTypography>
-        <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.username)} variant="caption" color="text" fontWeight="medium">
-          Delete
+        <MDTypography className='m-1' component="a" href={`/record/detail/${data.id}`} variant="caption" color="text" fontWeight="medium">
+          Show
         </MDTypography>
       </>
     }
   ))
   useEffect(() => {
-    axios.post(`${process.env.REACT_APP_API}/account/index`, '', {
+    axios.post(`${process.env.REACT_APP_API}/record/index`, '', {
       headers: {
         'authorization': `token ${localStorage.getItem('accessToken')}`
       }
     }).then(result => {
-      setDatas(result.data.users)
+      setDatas(result.data.stations)
     })
-      .catch(() => {
+      .catch((err) => {
         localStorage.removeItem('accessToken')
         window.location.href = '/'
       })
@@ -97,14 +77,6 @@ function Record() {
                     Records
                   </MDTypography>
                 </MDBox>
-              </Grid>
-
-              <Grid item xs={9}>
-                <Link to='add'>
-                  <MDButton className='btn-right' style={{ 'margin-right': '5px' }} size='large' variant="contained" color="warning">
-                    New
-                  </MDButton>
-                </Link>
               </Grid>
             </Grid>
             {datas.length > 0 &&

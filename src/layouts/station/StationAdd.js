@@ -89,12 +89,12 @@ const StationAdd = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={6}>
                     <MDBox mb={2}>
-                      <MDInput name='long' type="number" label="Longtitude" variant="standard" fullWidth onChange={inputChange} />
+                      <MDInput name='lati' type="number" label="Latitude" variant="standard" fullWidth onChange={inputChange} />
                     </MDBox>
                   </Grid>
                   <Grid item xs={6}>
                     <MDBox mb={2}>
-                      <MDInput name='lati' type="number" label="Latitude" variant="standard" fullWidth onChange={inputChange} />
+                      <MDInput name='long' type="number" label="Longtitude" variant="standard" fullWidth onChange={inputChange} />
                     </MDBox>
                   </Grid>
                 </Grid>

@@ -47,7 +47,6 @@ function Basic() {
   const usernameRef = useRef()
   const [input, setInput] = useState({ username: '', password: '' })
   const [msg, setMsg] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false);
 
   const inputChange = (event) => {
     const { name, value } = event.target
@@ -56,8 +55,6 @@ function Basic() {
       [name]: value
     })
   }
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const loginClick = async (event) => {
     event.preventDefault()
@@ -68,7 +65,7 @@ function Basic() {
     }).then(result => {
       if (!result.data.err) {
         window.localStorage.setItem('accessToken', result.data)
-        rememberMe && window.localStorage.setItem('remember', input.username)
+        window.localStorage.setItem('remember', input.username)
         window.location.href = '/map/*'
       } else {
         setMsg(true)

@@ -4,7 +4,7 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Record from '.';
-import RecordAdd from './RecordAdd';
+import RecordDetail from './RecordDetail';
 
 const RecordLayout = () => {
     return (
@@ -12,8 +12,7 @@ const RecordLayout = () => {
             <DashboardNavbar />
             <Routes>
                 <Route path='/*' element={<Record />} />
-                <Route path='/add' element={<RecordAdd />} />
-                {/* <Route path='/edit/:username' element={<AccountEdit />} /> */}
+                <Route path='/detail/:id' element={<RecordDetail />} />
             </Routes >
             <Footer />
         </DashboardLayout>
