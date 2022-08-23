@@ -17,7 +17,7 @@ function MaintainList({ id }) {
             {!select ? datas?.map(data => (
                 <>
                     <div key={data.id} style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
-                        <span><label>วันที่ลงทะเบียน : {new Date(data.create_date).toLocaleDateString('th')}</label>
+                        <span><label>วันที่ลงทะเบียน : {new Date(data.create_date).toLocaleString('th')}</label>
                         </span>
                         <span><label>ผู้ซ่อม : {data.sign}</label></span>
                         <span><a href='#' onClick={() => setSelect(data.id)}>ดูรายละเอียด</a></span>

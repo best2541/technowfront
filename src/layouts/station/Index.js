@@ -60,10 +60,10 @@ function Station() {
             url: data?.url,
             action: <>
                 <MDTypography className='m-1' component="a" href={`/station/edit/${data.id}`} variant="caption" color="text" fontWeight="medium">
-                    Edit
+                    Show
                 </MDTypography>
                 <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.id)} variant="caption" color="text" fontWeight="medium">
-                    Delete
+                    {window.localStorage.getItem('role') == '1' ? 'Delete' : ''}
                 </MDTypography>
             </>
         }

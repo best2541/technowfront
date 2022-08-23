@@ -14,6 +14,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet'
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 function Map() {
   const [datas, setDatas] = useState()
 
@@ -60,15 +61,15 @@ function Map() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   {datas?.map(data => {
-                    // if (JSON?.parse(data.callback)) {
-                    return (
-                      <Marker position={[data.lati, data.long]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                        <Popup>
-                          {data.name}
-                        </Popup>
-                      </Marker>
-                    )
-                    // }
+                    if (JSON?.parse(JSON.parse(data.callback)?.API_CODE == '-504')) {
+                      return (
+                        <Marker position={[data.lati, data.long]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
+                          <Popup>
+                            {data.name} <Link to={`/record/detail/${data.id}`}><a>click</a></Link>
+                          </Popup>
+                        </Marker>
+                      )
+                    }
                   })}
                 </MapContainer>
               </Grid>

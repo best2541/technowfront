@@ -21,7 +21,7 @@ function ContractList({ id }) {
         <div className='box' style={{ 'overflow-y': 'auto' }}>
             {datas?.map(data => (
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
-                    <span><label>วันที่ลงทะเบียน : {new Date(data.create_date).toLocaleDateString('th')}</label></span>
+                    <span><label>วันที่ลงทะเบียน : {new Date(data.create_date).toLocaleString('th')}</label></span>
                     <span><label>วันหมดสัญญา : {new Date(data.exp).toLocaleDateString('th')}</label></span>
                     <span><a target='_blank' href={`http://localhost:3001/img/contract/${data?.file}`}>ดูสัญญา</a></span>
                 </div>

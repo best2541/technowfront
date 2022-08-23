@@ -64,7 +64,8 @@ function Basic() {
       password: input.password
     }).then(result => {
       if (!result.data.err) {
-        window.localStorage.setItem('accessToken', result.data)
+        window.localStorage.setItem('accessToken', result.data.token)
+        window.localStorage.setItem('role', result.data.role)
         window.localStorage.setItem('remember', input.username)
         window.location.href = '/map/*'
       } else {
