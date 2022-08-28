@@ -14,7 +14,6 @@ import MDTypography from 'components/MDTypography';
 const RecordDetail = () => {
     const [input, setInput] = useState(new Date().getDate())
     const [station, setStation] = useState([])
-    const [select, setSelect] = useState([])
     const [times, setTimes] = useState(new Date().getHours())
     const [callback, setCallback] = useState([])
     const { id } = useParams()
@@ -27,7 +26,6 @@ const RecordDetail = () => {
         }).then(async result => {
             if (!result.data.err) {
                 setCallback(result.data.record)
-                setSelect(result.data.record.filter(rec => new Date(rec.create_date).getDate() == input))
                 setStation(result.data?.stations)
             }
         })
@@ -36,9 +34,7 @@ const RecordDetail = () => {
                 window.location.href = '/'
             })
     }, [])
-    useEffect(() => {
-        setSelect(callback.filter(rec => new Date(rec?.create_date).getDate() == input))
-    }, [input])
+    
     return (
         <MDBox pt={6} pb={3}>
             <Grid container spacing={6}>
