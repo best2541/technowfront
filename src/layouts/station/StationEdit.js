@@ -14,6 +14,8 @@ import Contract from './Contract';
 import Maintain from './Maintain';
 import ContractList from './ContractList';
 import MaintainList from './MaintainList';
+import Cctv from './Cctv';
+import CctvList from './CctvList';
 
 const StationEdit = () => {
     const [input, setInput] = useState([])
@@ -167,6 +169,20 @@ const StationEdit = () => {
                                         <Contract id={id} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
+                                {display?.cctvList &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, cctvList: false })}>
+                                        </div>
+                                        <CctvList id={id} onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
+                                {display?.cctv &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, cctv: false })}>
+                                        </div>
+                                        <Cctv id={id} onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
                                 {display?.maintainList &&
                                     <>
                                         <div className='overlay' onClick={() => setDisplay({ ...display, maintainList: false })}>
@@ -186,6 +202,10 @@ const StationEdit = () => {
                                         <div>
                                             <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}>สัญญา</MDButton>
                                             <MDButton variant='gradient' color='primary' onClick={() => setDisplay({ ...display, contract: !display.contract })}>เพิ่ม</MDButton>
+                                        </div>
+                                        <div>
+                                            <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}>กล้องวงจรปิด</MDButton>
+                                            <MDButton variant='gradient' color='warning' onClick={() => setDisplay({ ...display, cctv: true })}>เพิ่ม</MDButton>
                                         </div>
                                         <div>
                                             <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}>ประวัติการซ่อมบำรุง</MDButton>

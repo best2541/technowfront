@@ -7,55 +7,28 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 
 const RecordDetail = () => {
-    const [input, setInput] = useState([])
-    const [callback, setCallback] = useState({})
-    const [display, setDisplay] = useState({ contract: false, maintain: false })
+    const [input, setInput] = useState(new Date().getDate())
+    const [station, setStation] = useState([])
+    const [select, setSelect] = useState([])
+    const [times, setTimes] = useState(new Date().getHours())
+    const [callback, setCallback] = useState([])
     const { id } = useParams()
-
-    const inputChange = (event) => {
-        const { name, value } = event.target
-        setInput({
-            ...input,
-            [name]: value,
-        })
-    }
-    const addClick = () => {
-        let formData = new FormData()
-        formData.append('img_name', input?.name)
-        formData.append('file', input?.img)
-        axios.post(`${process.env.REACT_APP_API}/station/update/${id}`, {
-            name: input?.name,
-            tel: input?.tel,
-            url: input?.url,
-            long: input?.long,
-            lati: input?.lati,
-            key: input?.key
-        }, {
-            headers: {
-                'authorization': `token ${localStorage.getItem('accessToken')}`
-            }
-        }).then(result => console.log(result))
-            .catch(() => {
-                localStorage.removeItem('accessToken')
-                window.location.href = '/'
-            })
-    }
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/record/detail/${id}`, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
-        }).then(result => {
+        }).then(async result => {
             if (!result.data.err) {
-                setCallback(JSON.parse(result.data.record[0].callback))
-                setInput(result.data.record[0])
+                setCallback(result.data.record)
+                setSelect(result.data.record.filter(rec => new Date(rec.create_date).getDate() == input))
+                setStation(result.data?.stations)
             }
         })
             .catch(() => {
@@ -63,7 +36,9 @@ const RecordDetail = () => {
                 window.location.href = '/'
             })
     }, [])
-
+    useEffect(() => {
+        setSelect(callback.filter(rec => new Date(rec?.create_date).getDate() == input))
+    }, [input])
     return (
         <MDBox pt={6} pb={3}>
             <Grid container spacing={6}>
@@ -81,18 +56,27 @@ const RecordDetail = () => {
                             textAlign="center"
                         >
                             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                                {input?.name}
+                                {station[0]?.name}
                             </MDTypography>
                         </MDBox>
-                        {input?.id &&
+                        {station &&
                             <MDBox pt={4} pb={3} px={3}>
+                                <div style={{ direction: 'rtl' }}>
+                                    <MDInput type='time' step="3600000" variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setTimes(event.target.value.split(':')[0])} />
+                                    <MDInput type='date' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setInput(new Date(event.target.value).getDate())} />
+                                </div>
                                 <MDBox component="form" role="form">
                                     <Grid container spacing={3}>
-                                        {callback && Object.keys(callback).map(call => (
-                                            <Grid item xs={6}>
-                                                <MDTypography>{call} : {callback[call]}</MDTypography>
-                                            </Grid>
-                                        ))}
+                                        {callback && input && callback.filter(rec => new Date(rec?.create_date).getDate() == input && new Date(rec?.create_date).getHours() == times).map(call => {
+                                            const datas = JSON.parse(call.callback)
+                                            return Object.keys(datas).map(data => (
+                                                < Grid item xs={6}>
+                                                    <MDTypography>{data} : {datas[data]}</MDTypography>
+                                                </Grid>
+                                            ))
+                                        }
+                                        )
+                                        }
                                     </Grid>
                                 </MDBox>
                             </MDBox>
