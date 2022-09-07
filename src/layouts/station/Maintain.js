@@ -6,15 +6,18 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MDButton from 'components/MDButton';
 import axios from 'axios';
 import createImagePlugin from "draft-js-image-plugin";
+import MDInput from 'components/MDInput';
 
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
 
 function Maintain({ id }) {
+    const [input, setInput] = useState()
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
-    const createClick = () => {
-        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { id: id, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
+    const createClick = (event) => {
+        event.preventDefault()
+        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { id: id, name: input.name, description: input.description, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
@@ -52,19 +55,24 @@ function Maintain({ id }) {
 
     return (
         <div className='box'>
-            <Editor
-                editorState={editorState}
-                plugins={plugins}
-                wrapperClassName="editor-header"
-                editorClassName="editor"
-                onEditorStateChange={(event) => setEditorState(event)}
-                toolbar={{
-                    image: {
-                        uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true }
-                    }
-                }}
-            />
-            <MDButton color='success' style={{ position: 'absolute', bottom: 0, left: 0 }} fullWidth onClick={() => createClick()}>New</MDButton>
+            <form onSubmit={createClick}>
+                <MDInput label='Name' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, name: event.target.value })} required />
+                <MDInput label='Description' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, description: event.target.value })} required />
+                <br /><br />
+                <Editor
+                    editorState={editorState}
+                    plugins={plugins}
+                    wrapperClassName="editor-header"
+                    editorClassName="editor-small"
+                    onEditorStateChange={(event) => setEditorState(event)}
+                    toolbar={{
+                        image: {
+                            uploadCallback: uploadImageCallBack, alt: { present: true, mandatory: true }
+                        }
+                    }}
+                />
+                <MDButton color='success' type='submit' style={{ position: 'absolute', bottom: 0, left: 0 }} fullWidth>New</MDButton>
+            </form>
         </div>
     )
 }

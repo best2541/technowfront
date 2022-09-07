@@ -19,6 +19,7 @@ import CctvList from './CctvList';
 
 const StationEdit = () => {
     const [input, setInput] = useState([])
+    const [button, setButton] = useState(0)
     const [display, setDisplay] = useState({ contract: false, maintain: false })
     const { id } = useParams()
 
@@ -30,7 +31,6 @@ const StationEdit = () => {
         })
     }
     const addClick = () => {
-        console.log(input)
         let formData = new FormData()
         formData.append('img_name', input?.name)
         formData.append('file', input?.img)
@@ -48,6 +48,22 @@ const StationEdit = () => {
         }).then(result => {
             if (!result.data.err)
                 alert('เรียบร้อย')
+        })
+            .catch(() => {
+                localStorage.removeItem('accessToken')
+                window.location.href = '/'
+            })
+    }
+    const ticketClick = (status) => {
+        axios.post(`${process.env.REACT_APP_API}/station/ticket/${id}`, {
+            status: status
+        }, {
+            headers: {
+                'authorization': `token ${localStorage.getItem('accessToken')}`
+            }
+        }).then((result) => {
+            if (!result.data.err)
+                window.location.reload()
         })
             .catch(() => {
                 localStorage.removeItem('accessToken')
@@ -77,6 +93,7 @@ const StationEdit = () => {
         }).then(result => {
             if (!result.data.err) {
                 setInput(result.data.stations[0])
+                setButton(result.data.stations[0]?.status)
             }
         })
             .catch(() => {
@@ -213,9 +230,14 @@ const StationEdit = () => {
                                         </div>
                                     </div>
                                 </MDBox>
-                                <MDBox mt={4} mb={1}>
+                                <MDBox mt={4}>
                                     <MDButton variant="gradient" color="success" onClick={() => addClick()} fullWidth>
                                         UPDATE
+                                    </MDButton>
+                                </MDBox>
+                                <MDBox mt={2} mb={1}>
+                                    <MDButton variant="gradient" color={button == 0 ? "error" : "info"} onMouseOver={() => button != 0 && setButton(4)} onMouseLeave={() => setButton(input?.status)} onClick={() => ticketClick(input?.status == 0 ? 1 : 0)} fullWidth>
+                                        {button == 0 ? <>OPEN TICKET</> : button == 1 ? <>WAIT</> : button == 2 ? <>PENDING</> : button == 3 ? <>FIXED</> : <>CLOSE TICKET</>}
                                     </MDButton>
                                 </MDBox>
                             </MDBox>

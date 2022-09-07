@@ -21,7 +21,7 @@ function CctvList({ id }) {
         <div className='box' style={{ 'overflow-y': 'auto' }}>
             {datas?.map(data => (
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
-                    <span><label>Link : <a href='' onClick={() => window.open(`http://${data.link.split('http://' && 'https://').pop()}`)}>{data.link}</a></label></span>
+                    <span><label>{data.name} : <a href='' onClick={() => window.open(`https://${data.link.split('http://' && 'https://').pop()}`)}>{data.link}</a></label></span>
                 </div>
             ))
             }

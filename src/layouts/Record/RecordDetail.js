@@ -6,20 +6,20 @@ import Card from "@mui/material/Card";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDInput from "components/MDInput";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
+import { TextField } from '@mui/material';
 
 const RecordDetail = () => {
-    const [input, setInput] = useState(new Date().getDate())
+    const [since, setSince] = useState({ since: new Date(2000, 1, 1), to: new Date() })
     const [station, setStation] = useState([])
-    const [times, setTimes] = useState(new Date().getHours())
     const [callback, setCallback] = useState([])
+    const [form, setForm] = useState([])
     const { id } = useParams()
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/record/detail/${id}`, {
+        axios.post(`${process.env.REACT_APP_API}/record/detail/${id}`, { since: since.since, to: since.to }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
@@ -29,17 +29,22 @@ const RecordDetail = () => {
                 setStation(result.data?.stations)
             }
         })
-            .catch(() => {
-                localStorage.removeItem('accessToken')
-                window.location.href = '/'
-            })
-    }, [])
-    
+        axios.get(`${process.env.REACT_APP_API}/form/index`, {
+            headers: {
+                'authorization': `token ${localStorage.getItem('accessToken')}`
+            }
+        }).then(result => setForm(result.data.form))
+        // .catch(() => {
+        //     localStorage.removeItem('accessToken')
+        //     window.location.href = '/'
+        // })
+    }, [since])
+
     return (
         <MDBox pt={6} pb={3}>
             <Grid container spacing={6}>
                 <Grid item xs={12}>
-                    <Card>
+                    <Card >
                         <MDBox
                             variant="gradient"
                             bgColor="info"
@@ -56,20 +61,49 @@ const RecordDetail = () => {
                             </MDTypography>
                         </MDBox>
                         {station &&
-                            <MDBox pt={4} pb={3} px={3}>
-                                <div style={{ direction: 'rtl' }}>
-                                    <MDInput type='time' step="3600000" variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setTimes(event.target.value.split(':')[0])} />
-                                    <MDInput type='date' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setInput(new Date(event.target.value).getDate())} />
+                            <MDBox pt={4} pb={3} px={3} style={{ 'color': 'white' }}>
+                                <div className='header'>
+                                    <div>
+                                        <TextField
+                                            id="datetime-local"
+                                            label="since"
+                                            type="datetime-local"
+                                            defaultValue={new Date()}
+                                            onChange={(event) => setSince({ ...since, since: event.target.value })}
+                                            sx={{ width: 250 }}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            id="datetime-local"
+                                            label="to"
+                                            type="datetime-local"
+                                            defaultValue={new Date()}
+                                            onChange={(event) => setSince({ ...since, to: event.target.value })}
+                                            sx={{ width: 250 }}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                                <MDBox component="form" role="form">
-                                    <Grid container spacing={3}>
-                                        {callback && input && callback.filter(rec => new Date(rec?.create_date).getDate() == input && new Date(rec?.create_date).getHours() == times).map(call => {
+                                <MDBox>
+                                    <Grid container spacing={2}>
+                                        {callback && callback.map(call => {
                                             const datas = JSON.parse(call.callback)
-                                            return Object.keys(datas).map(data => (
-                                                < Grid item xs={6}>
-                                                    <MDTypography>{data} : {datas[data]}</MDTypography>
+                                            return (
+                                                <Grid item xs={6}>
+                                                    <div>{call.create_date}</div>
+                                                    {Object.keys(datas).map(data => (
+                                                        < Grid item xs={6}>
+                                                            <MDTypography>{data} : {form.filter(f => f.key == data && f.value == datas[data]).length != 0 ? form.filter(f => f.key == data && f.value == datas[data]).map(res => res?.callback) : datas[data]}</MDTypography>
+                                                        </Grid>
+                                                    ))}
                                                 </Grid>
-                                            ))
+                                            )
                                         }
                                         )
                                         }

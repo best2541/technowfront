@@ -23,7 +23,7 @@ import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 // import MDAvatar from "components/MDAvatar";
-// import MDBadge from "components/MDBadge";
+import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DataTable from "examples/Tables/DataTable";
@@ -48,7 +48,7 @@ function Station() {
     }
     const columns = [
         { Header: "Station", accessor: "station", width: "45%", align: "left" },
-        { Header: "Url", accessor: "url", align: "center" },
+        { Header: "Status", accessor: "status", align: "center" },
         { Header: "action", accessor: "action", align: "center" },
     ]
 
@@ -57,7 +57,9 @@ function Station() {
             station: < MDTypography variant="button" fontWeight="medium" >
                 {data?.name}
             </MDTypography >,
-            url: data?.url,
+            status: <MDBox ml={-1}>
+                <MDBadge badgeContent={data.status == '0' ? 'working' : data.status == '1' ? 'wait' : data.status == '2' ? 'pending' : 'fixed'} color={data.status == '0' ? 'success' : 'warning'} variant="gradient" size="sm" />
+            </MDBox>,
             action: <>
                 <MDTypography className='m-1' component="a" href={`/station/edit/${data.id}`} variant="caption" color="text" fontWeight="medium">
                     Show

@@ -42,7 +42,7 @@ function Record() {
     }
   ))
   useEffect(() => {
-    axios.post(`${process.env.REACT_APP_API}/record/index`, '', {
+    axios.get(`${process.env.REACT_APP_API}/record/index`, {
       headers: {
         'authorization': `token ${localStorage.getItem('accessToken')}`
       }

@@ -12,6 +12,7 @@ function Cctv({ id
         event.preventDefault()
         axios.post(`${process.env.REACT_APP_API}/station/cctv/new`, {
             station_id: id,
+            name: input?.name,
             link: input?.link
         }, {
             headers: {
@@ -26,6 +27,7 @@ function Cctv({ id
     return (
         <div className='box'>
             <form onSubmit={createClick}>
+                <MDInput label='Name' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, name: event.target.value })} required />
                 <MDInput label='Link' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, link: event.target.value })} required />
                 <MDButton type='submit' style={{ position: 'absolute', bottom: 0, left: 0 }} color='success' fullWidth>New</MDButton>
             </form>

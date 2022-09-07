@@ -10,13 +10,13 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Contract from './Contract';
 import Maintain from './Maintain';
 import ContractList from './ContractList';
 import MaintainList from './MaintainList';
 
 const MaintainStationEdit = () => {
     const [input, setInput] = useState([])
+    const [button, setButton] = useState(0)
     const [display, setDisplay] = useState({ contract: false, maintain: false })
     const { id } = useParams()
 
@@ -27,40 +27,18 @@ const MaintainStationEdit = () => {
             [name]: value,
         })
     }
-    const addClick = () => {
-        let formData = new FormData()
-        formData.append('img_name', input?.name)
-        formData.append('file', input?.img)
-        axios.post(`${process.env.REACT_APP_API}/station/update/${id}`, {
-            name: input?.name,
-            tel: input?.tel,
-            url: input?.url,
-            long: input?.long,
-            lati: input?.lati,
-            key: input?.key
+    const ticketClick = (status) => {
+        axios.post(`${process.env.REACT_APP_API}/station/ticket/${id}`, {
+            status: status
         }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
-        }).then(result => {
+        }).then((result) => {
             if (!result.data.err)
-                alert('เรียบร้อย')
+                window.location.reload()
         })
             .catch(() => {
-                localStorage.removeItem('accessToken')
-                window.location.href = '/'
-            })
-    }
-    const uploadImg = async (event) => {
-        let formData = new FormData()
-        formData.append('img_name', id)
-        formData.append('file', event.target.files[0])
-        axios.post(`${process.env.REACT_APP_API}/station/updateImg/${id}`, formData, {
-            headers: {
-                'authorization': `token ${localStorage.getItem('accessToken')}`
-            }
-        }).then(result => window.location.reload())
-            .catch((err) => {
                 localStorage.removeItem('accessToken')
                 window.location.href = '/'
             })
@@ -73,6 +51,7 @@ const MaintainStationEdit = () => {
         }).then(result => {
             if (!result.data.err) {
                 setInput(result.data.stations[0])
+                setButton(result.data.stations[0]?.status)
             }
         })
             .catch(() => {
@@ -170,10 +149,18 @@ const MaintainStationEdit = () => {
                                             <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}>สัญญา</MDButton>
                                         </div>
                                         <div>
+                                            <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}>กล้องวงจรปิด</MDButton>
+                                        </div>
+                                        <div>
                                             <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}>ประวัติการซ่อมบำรุง</MDButton>
                                             <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}>เพิ่ม</MDButton>
                                         </div>
                                     </div>
+                                </MDBox>
+                                <MDBox mt={2} mb={1}>
+                                    <MDButton variant="gradient" color={button == 0 ? "error" : "info"} onMouseOver={() => button != 0 && setButton(button == 3 ? button - 1 : button + 1)} onMouseLeave={() => setButton(input?.status)} onClick={() => ticketClick(button)} disabled={button == 0} fullWidth>
+                                        {button == 0 ? <>OPEN TICKET</> : button == 1 ? <>WAIT</> : button == 2 ? <>PENDING</> : button == 3 ? <>FIXED</> : <>CLOSE TICKET</>}
+                                    </MDButton>
                                 </MDBox>
                             </MDBox>
                         }

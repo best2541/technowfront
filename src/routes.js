@@ -10,6 +10,7 @@ import AccountLayout from "layouts/accounts/AccountLayout";
 import StationRoutes from "layouts/station/StationRoutes";
 import MapLayout from "layouts/map/MapLayout";
 import RecordLayout from "layouts/Record/RecordLayout";
+import FormLayout from "layouts/form/FormLayout";
 
 const routes = window.localStorage.getItem('accessToken') && window.localStorage.getItem('role') == 1 ? [
   {
@@ -59,6 +60,14 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
     icon: <Icon fontSize="small">person</Icon>,
     route: "/accounts/*",
     component: <AccountLayout />,
+  },
+  {
+    type: "collapse",
+    name: "Form",
+    key: "Form",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/setting/*",
+    component: <FormLayout />,
   },
   // {
   //   type: "collapse",

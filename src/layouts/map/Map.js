@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Checkbox from '@mui/material/Checkbox';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -17,6 +18,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 function Map() {
   const [datas, setDatas] = useState()
+  const [working, setWorking] = useState(true)
+  const [error, setError] = useState(true)
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API}/map/index`, {
@@ -55,29 +58,46 @@ function Map() {
                 </MDBox>
               </Grid>
               <Grid item xs={12}>
+                <Checkbox checked={working} onClick={() => setWorking(!working)} /> <label className='text'>working</label> <Checkbox checked={error} onClick={() => setError(!error)} /> <label className='text'>error</label>
                 <MapContainer style={{ height: '500px', width: '100%' }} center={[12, 102]} zoom={5} scrollWheelZoom={false}>
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   {datas?.map(data => {
-                    if (JSON?.parse(JSON.parse(data.callback)?.API_CODE == '-504')) {
-                      return (
-                        <Marker position={[data.lati, data.long]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                          <Popup>
-                            {data.name} <Link to={`/record/detail/${data.id}`}><a>click</a></Link>
-                          </Popup>
-                        </Marker>
-                      )
+                    if (JSON?.parse(JSON.parse(data.callback)?.API_CODE == '-504') || data.status != 0) {
+                      if (error)
+                        return (
+                          <Marker position={[data.lati, data.long]} icon={new Icon({
+                            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Google_Maps_pin.svg/585px-Google_Maps_pin.svg.png', iconSize: [25, 41], iconAnchor: [12, 41]
+                          })}>
+                            < Popup >
+                              {data.name} < Link to={`/record/detail/${data.id}`
+                              } > <a>click</a></Link>
+                            </Popup>
+                          </Marker>
+                        )
+                    } else {
+                      if (working)
+                        return (
+                          <Marker position={[data.lati, data.long]} icon={new Icon({
+                            iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]
+                          })}>
+                            < Popup >
+                              {data.name} < Link to={`/record/detail/${data.id}`
+                              } > <a>click</a></Link>
+                            </Popup>
+                          </Marker>
+                        )
                     }
                   })}
                 </MapContainer>
               </Grid>
             </Grid>
           </Card>
-        </Grid>
-      </Grid>
-    </MDBox>
+        </Grid >
+      </Grid >
+    </MDBox >
   )
 }
 
