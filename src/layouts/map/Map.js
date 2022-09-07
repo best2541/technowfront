@@ -57,15 +57,18 @@ function Map() {
                   </MDTypography>
                 </MDBox>
               </Grid>
+              <Grid item xs={9}>
+                <Checkbox className='right-btn' checked={working} onClick={() => setWorking(!working)} /> <label className='text'>working</label> <Checkbox className='right-btn' checked={error} onClick={() => setError(!error)} /> <label className='text'>error</label>
+              </Grid>
               <Grid item xs={12}>
-                <Checkbox checked={working} onClick={() => setWorking(!working)} /> <label className='text'>working</label> <Checkbox checked={error} onClick={() => setError(!error)} /> <label className='text'>error</label>
                 <MapContainer style={{ height: '500px', width: '100%' }} center={[12, 102]} zoom={5} scrollWheelZoom={false}>
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   {datas?.map(data => {
-                    if (JSON?.parse(JSON.parse(data.callback)?.API_CODE == '-504') || data.status != 0) {
+                    const call = data?.callback && JSON?.parse(data.callback)
+                    if (call?.API_CODE == '-504' || call?.ALARM != 0 || call.DCV < 11.8 || call.DCV > 13 || data.status != 0) {
                       if (error)
                         return (
                           <Marker position={[data.lati, data.long]} icon={new Icon({

@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 import { TextField } from '@mui/material';
 
@@ -56,9 +56,11 @@ const RecordDetail = () => {
                             mb={1}
                             textAlign="center"
                         >
-                            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                                {station[0]?.name}
-                            </MDTypography>
+                            <Link to={`/station/edit/${id}`}>
+                                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                                    {station[0]?.name}
+                                </MDTypography>
+                            </Link>
                         </MDBox>
                         {station &&
                             <MDBox pt={4} pb={3} px={3} style={{ 'color': 'white' }}>
