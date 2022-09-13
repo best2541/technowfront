@@ -1,4 +1,4 @@
-import { Card, Grid } from '@mui/material'
+import { Card, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select } from '@mui/material'
 import axios from 'axios'
 import MDBox from 'components/MDBox'
 import MDButton from 'components/MDButton'
@@ -37,6 +37,7 @@ function Index() {
     const save = (obj) => {
         axios.post(`${process.env.REACT_APP_API}/form/update/${obj.id}`, {
             key: obj.key,
+            type: obj.type,
             value: obj.value,
             callback: obj.callback
         }, {
@@ -85,12 +86,13 @@ function Index() {
                             <Grid container spacing={2}>
                                 {datas.map((data, index) => (
                                     <>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={3}>
                                             <MDInput name="key" label="key" variant="standard" value={data.key} fullWidth onChange={async (event) => {
                                                 await setDatas([
                                                     ...datas.slice(0, index),
                                                     {
                                                         id: data.id,
+                                                        type: data.type,
                                                         key: event.target.value,
                                                         value: data.value,
                                                         callback: data.callback,
@@ -100,6 +102,7 @@ function Index() {
                                                 ])
                                                 save({
                                                     id: data.id,
+                                                    type: data.type,
                                                     key: event.target.value,
                                                     value: data.value,
                                                     callback: data.callback,
@@ -107,12 +110,13 @@ function Index() {
                                                 })
                                             }} />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={2}>
                                             <MDInput name="value" label="value" variant="standard" value={data.value} fullWidth onChange={(event) => {
                                                 setDatas([
                                                     ...datas.slice(0, index),
                                                     {
                                                         id: data.id,
+                                                        type: data.type,
                                                         key: data.key,
                                                         value: event.target.value,
                                                         callback: data.callback,
@@ -122,6 +126,7 @@ function Index() {
                                                 ])
                                                 save({
                                                     id: data.id,
+                                                    type: data.type,
                                                     key: data.key,
                                                     value: event.target.value,
                                                     callback: data.callback,
@@ -135,6 +140,7 @@ function Index() {
                                                     ...datas.slice(0, index),
                                                     {
                                                         id: data.id,
+                                                        type: data.type,
                                                         key: data.key,
                                                         value: data.value,
                                                         callback: event.target.value,
@@ -144,12 +150,49 @@ function Index() {
                                                 ])
                                                 save({
                                                     id: data.id,
+                                                    type: data.type,
                                                     key: data.key,
                                                     value: data.value,
                                                     callback: event.target.value,
                                                     username: data.username
                                                 })
                                             }} />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <FormControl fullWidth>
+                                                <RadioGroup
+                                                    row
+                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                    name="row-radio-buttons-group"
+                                                    style={{ display: 'flex', 'justifyContent': 'space-around' }}
+                                                    value={data.type}
+                                                    onChange={async (event) => {
+                                                        await setDatas([
+                                                            ...datas.slice(0, index),
+                                                            {
+                                                                id: data.id,
+                                                                type: parseInt(event.target.value),
+                                                                key: data.key,
+                                                                value: data.value,
+                                                                callback: data.callback,
+                                                                username: data.username
+                                                            },
+                                                            ...datas.slice(index + 1)
+                                                        ])
+                                                        save({
+                                                            id: data.id,
+                                                            type: parseInt(event.target.value),
+                                                            key: data.key,
+                                                            value: data.value,
+                                                            callback: data.callback,
+                                                            username: data.username
+                                                        })
+                                                    }}
+                                                >
+                                                    <FormControlLabel value={1} control={<Radio />} label="Key" />
+                                                    <FormControlLabel value={2} control={<Radio />} label="Value" />
+                                                </RadioGroup>
+                                            </FormControl>
                                         </Grid>
                                         <Grid item xs={1}>
                                             <MDButton onClick={() => deleteClick(data.id)} color='error'>ลบ</MDButton>

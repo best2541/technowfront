@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react'
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import BuildIcon from '@mui/icons-material/Build';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import ArticleIcon from '@mui/icons-material/Article';
+import AddIcon from '@mui/icons-material/Add';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -13,20 +17,18 @@ import { useParams } from 'react-router-dom';
 import Maintain from './Maintain';
 import ContractList from './ContractList';
 import MaintainList from './MaintainList';
+import CctvList from './CctvList';
+import Ticket from './Ticket';
 
 const MaintainStationEdit = () => {
     const [input, setInput] = useState([])
     const [button, setButton] = useState(0)
     const [display, setDisplay] = useState({ contract: false, maintain: false })
     const { id } = useParams()
+    const contract = window.localStorage.getItem('contract')
+    const cctv = window.localStorage.getItem('cctv')
+    const maintain = window.localStorage.getItem('maintain')
 
-    const inputChange = (event) => {
-        const { name, value } = event.target
-        setInput({
-            ...input,
-            [name]: value,
-        })
-    }
     const ticketClick = (status) => {
         axios.post(`${process.env.REACT_APP_API}/station/ticket/${id}`, {
             status: status
@@ -50,6 +52,7 @@ const MaintainStationEdit = () => {
             }
         }).then(result => {
             if (!result.data.err) {
+                console.log(result.data)
                 setInput(result.data.stations[0])
                 setButton(result.data.stations[0]?.status)
             }
@@ -88,6 +91,7 @@ const MaintainStationEdit = () => {
                         </MDBox>
                         {input?.id &&
                             <MDBox pt={4} pb={3} px={3}>
+                                <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Logs</MDButton>
                                 <MDBox component="form" role="form">
                                     <MDBox mb={2}>
                                         <MDInput name='name' type="text" label="Station Name" variant="standard" value={input.name} fullWidth />
@@ -95,18 +99,6 @@ const MaintainStationEdit = () => {
                                     <MDBox mb={2}>
                                         <MDInput name='tel' type="tel" label="Tel" variant="standard" fullWidth value={input.tel} />
                                     </MDBox>
-                                    <Grid container spacing={3}>
-                                        <Grid item xs={6}>
-                                            <MDBox mb={2}>
-                                                <MDInput name='url' type="text" label="Url" variant="standard" value={input.url} fullWidth />
-                                            </MDBox>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <MDBox mb={2}>
-                                                <MDInput name='key' type="text" label="Key" variant="standard" value={input.key} fullWidth />
-                                            </MDBox>
-                                        </Grid>
-                                    </Grid>
                                     <Grid container spacing={3}>
                                         <Grid item xs={6}>
                                             <MDBox mb={2}>
@@ -129,6 +121,13 @@ const MaintainStationEdit = () => {
                                         <ContractList id={id} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
+                                {display?.cctvList &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, cctvList: false })}>
+                                        </div>
+                                        <CctvList id={id} onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
                                 {display?.maintainList &&
                                     <>
                                         <div className='overlay' onClick={() => setDisplay({ ...display, maintainList: false })}>
@@ -140,33 +139,53 @@ const MaintainStationEdit = () => {
                                     <>
                                         <div className='overlay' onClick={() => setDisplay({ ...display, maintain: false })}>
                                         </div>
-                                        <Maintain id={id} onClick={(event) => event.stopPropagation()} />
+                                        <Maintain id={id} ref_no={display.ref_no} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
                                 <MDBox mt={3} mb={1}>
                                     <div style={{ 'display': 'flex', 'justifyContent': 'space-around' }}>
-                                        <div>
-                                            <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}>สัญญา</MDButton>
-                                        </div>
-                                        <div>
-                                            <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}>กล้องวงจรปิด</MDButton>
-                                        </div>
-                                        <div>
-                                            <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}>ประวัติการซ่อมบำรุง</MDButton>
-                                            <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}>เพิ่ม</MDButton>
-                                        </div>
+                                        {contract != 0 &&
+                                            <div>
+                                                {contract > 0 &&
+                                                    <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}><ArticleIcon />Contract</MDButton>
+                                                }
+                                                {contract > 1 &&
+                                                    <MDButton variant='gradient' color='primary' onClick={() => setDisplay({ ...display, contract: !display.contract })}><AddIcon />Add</MDButton>
+                                                }
+                                            </div>
+                                        }
+                                        {cctv != 0 &&
+                                            <div>
+                                                {cctv > 0 &&
+                                                    <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}><CameraAltIcon />CCTV</MDButton>
+                                                }
+                                                {cctv > 1 &&
+                                                    <MDButton variant='gradient' color='warning' onClick={() => setDisplay({ ...display, cctv: true })}><AddIcon />Add</MDButton>
+                                                }
+                                            </div>
+                                        }
+                                        {maintain > 0 &&
+                                            <div>
+                                                <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}><BuildIcon />Maintain Log</MDButton>
+                                            </div>
+                                        }
+                                        {/* {maintain > 1 &&
+                                                <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}>Add</MDButton>
+                                            } */}
                                     </div>
                                 </MDBox>
-                                <MDBox mt={2} mb={1}>
+                                {/* <MDBox mt={2} mb={1}>
                                     <MDButton variant="gradient" color={button == 0 ? "error" : "info"} onMouseOver={() => button != 0 && setButton(button == 3 ? button - 1 : button + 1)} onMouseLeave={() => setButton(input?.status)} onClick={() => ticketClick(button)} disabled={button == 0} fullWidth>
                                         {button == 0 ? <>OPEN TICKET</> : button == 1 ? <>WAIT</> : button == 2 ? <>PENDING</> : button == 3 ? <>FIXED</> : <>CLOSE TICKET</>}
                                     </MDButton>
-                                </MDBox>
+                                </MDBox> */}
                             </MDBox>
                         }
                     </Card>
                 </Grid>
             </Grid>
+            <br />
+            <Ticket id={id} setDisplay={setDisplay} />
         </MDBox >
     )
 }

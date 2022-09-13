@@ -128,6 +128,121 @@ const AccountEdit = () => {
                       </Select>
                     </FormControl>
                   </Grid>
+                  {datas.role == 1 &&
+                    <>
+                      <Grid item xs={2}>
+                        <MDTypography>
+                          Account Setting
+                        </MDTypography>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <MDTypography variant='span'>
+                          :
+                        </MDTypography>
+                        <FormControl variant="standard" sx={{ minWidth: 120, width: '99%' }}>
+                          <InputLabel id="demo-simple-select-standard-label"></InputLabel>
+                          <Select
+                            name='users'
+                            className='text'
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            onChange={inputChange}
+                            label="users"
+                            value={datas.users}
+                            fullWidth
+                          >
+                            <MenuItem value={0}>Denied</MenuItem>
+                            <MenuItem value={1}>Accessible</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </>
+                  }
+                  {datas.role == 2 &&
+                    <>
+                      <Grid item xs={2}>
+                        <MDTypography>
+                          Contract
+                        </MDTypography>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <MDTypography variant='span'>
+                          :
+                        </MDTypography>
+                        <FormControl variant="standard" sx={{ minWidth: 120, width: '99%' }}>
+                          <InputLabel id="demo-simple-select-standard-label"></InputLabel>
+                          <Select
+                            name='contract'
+                            className='text'
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            onChange={inputChange}
+                            label="contract"
+                            value={datas.contract}
+                            fullWidth
+                          >
+                            <MenuItem value={0}>Denied</MenuItem>
+                            <MenuItem value={1}>Read only</MenuItem>
+                            <MenuItem value={2}>Read/Edit</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <MDTypography>
+                          CCTV
+                        </MDTypography>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <MDTypography variant='span'>
+                          :
+                        </MDTypography>
+                        <FormControl variant="standard" sx={{ minWidth: 120, width: '99%' }}>
+                          <InputLabel id="demo-simple-select-standard-label"></InputLabel>
+                          <Select
+                            name='cctv'
+                            className='text'
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            onChange={inputChange}
+                            label="cctv"
+                            value={datas.cctv}
+                            fullWidth
+                          >
+                            <MenuItem value={0}>Denied</MenuItem>
+                            <MenuItem value={1}>Read only</MenuItem>
+                            <MenuItem value={2}>Read/Edit</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <MDTypography>
+                          Maintain
+                        </MDTypography>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <MDTypography variant='span'>
+                          :
+                        </MDTypography>
+                        <FormControl variant="standard" sx={{ minWidth: 120, width: '99%' }}>
+                          <InputLabel id="demo-simple-select-standard-label"></InputLabel>
+                          <Select
+                            name='maintain'
+                            className='text'
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            onChange={inputChange}
+                            label="maintain"
+                            value={datas.maintain}
+                            fullWidth
+                          >
+                            <MenuItem value={0}>Denied</MenuItem>
+                            <MenuItem value={1}>Read only</MenuItem>
+                            {/* <MenuItem value={2}>Read/Edit</MenuItem> */}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </>
+                  }
                   <Grid item xs={2}>
                     <MDTypography>
                       STATUS

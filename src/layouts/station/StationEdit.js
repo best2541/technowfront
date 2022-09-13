@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react'
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import BuildIcon from '@mui/icons-material/Build';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import ArticleIcon from '@mui/icons-material/Article';
+import AddIcon from '@mui/icons-material/Add';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -16,6 +20,7 @@ import ContractList from './ContractList';
 import MaintainList from './MaintainList';
 import Cctv from './Cctv';
 import CctvList from './CctvList';
+import Ticket from './Ticket';
 
 const StationEdit = () => {
     const [input, setInput] = useState([])
@@ -124,12 +129,10 @@ const StationEdit = () => {
                                     style={{ 'maxWidth': '100%', 'maxHeight': '500px' }}
                                 />
                             }
-                            {/* <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                                Create New Station
-                            </MDTypography> */}
                         </MDBox>
                         {input?.id &&
                             <MDBox pt={4} pb={3} px={3}>
+                                <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Logs</MDButton>
                                 <MDBox component="form" role="form">
                                     <MDBox mb={2}>
                                         <MDInput name='name' type="text" label="Station Name" variant="standard" value={input.name} fullWidth onChange={inputChange} />
@@ -211,22 +214,22 @@ const StationEdit = () => {
                                     <>
                                         <div className='overlay' onClick={() => setDisplay({ ...display, maintain: false })}>
                                         </div>
-                                        <Maintain id={id} onClick={(event) => event.stopPropagation()} />
+                                        <Maintain id={id} ref_no={display.ref_no} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
                                 <MDBox mt={3} mb={1}>
                                     <div style={{ 'display': 'flex', 'justifyContent': 'space-around' }}>
                                         <div>
-                                            <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}>สัญญา</MDButton>
-                                            <MDButton variant='gradient' color='primary' onClick={() => setDisplay({ ...display, contract: !display.contract })}>เพิ่ม</MDButton>
+                                            <MDButton variant='gradient' color='primary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, contractList: true })}><ArticleIcon />Contract</MDButton>
+                                            <MDButton variant='gradient' color='primary' onClick={() => setDisplay({ ...display, contract: !display.contract })}><AddIcon />Add</MDButton>
                                         </div>
                                         <div>
-                                            <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}>กล้องวงจรปิด</MDButton>
-                                            <MDButton variant='gradient' color='warning' onClick={() => setDisplay({ ...display, cctv: true })}>เพิ่ม</MDButton>
+                                            <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}><CameraAltIcon />CCTV</MDButton>
+                                            <MDButton variant='gradient' color='warning' onClick={() => setDisplay({ ...display, cctv: true })}><AddIcon />Add</MDButton>
                                         </div>
                                         <div>
-                                            <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}>ประวัติการซ่อมบำรุง</MDButton>
-                                            <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}>เพิ่ม</MDButton>
+                                            <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}><BuildIcon />Maintain Log</MDButton>
+                                            {/* <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}>Add</MDButton> */}
                                         </div>
                                     </div>
                                 </MDBox>
@@ -235,16 +238,18 @@ const StationEdit = () => {
                                         UPDATE
                                     </MDButton>
                                 </MDBox>
-                                <MDBox mt={2} mb={1}>
+                                {/* <MDBox mt={2} mb={1}>
                                     <MDButton variant="gradient" color={button == 0 ? "error" : "info"} onMouseOver={() => button != 0 && setButton(4)} onMouseLeave={() => setButton(input?.status)} onClick={() => ticketClick(input?.status == 0 ? 1 : 0)} fullWidth>
                                         {button == 0 ? <>OPEN TICKET</> : button == 1 ? <>WAIT</> : button == 2 ? <>PENDING</> : button == 3 ? <>FIXED</> : <>CLOSE TICKET</>}
                                     </MDButton>
-                                </MDBox>
+                                </MDBox> */}
                             </MDBox>
                         }
                     </Card>
                 </Grid>
             </Grid>
+            <br />
+            <Ticket id={id} setDisplay={setDisplay} />
         </MDBox >
     )
 }

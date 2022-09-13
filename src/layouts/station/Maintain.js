@@ -11,20 +11,28 @@ import MDInput from 'components/MDInput';
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
 
-function Maintain({ id }) {
+function Maintain({ id, ref_no }) {
     const [input, setInput] = useState()
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     const createClick = (event) => {
         event.preventDefault()
-        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { id: id, name: input.name, description: input.description, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
+        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { ref_no: `${ref_no}|${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}|${new Date().getMinutes()}:${new Date().getHours()}:${new Date().getSeconds()}`, id: id, name: input.name, description: input.description, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
         }).then(result => {
             if (!result.data.err) {
-                alert('เรียบร้อย')
-                setEditorState(EditorState.createEmpty())
+                axios.post(`${process.env.REACT_APP_API}/station/ticket/pending/${ref_no}`, {
+                    status: 3
+                }, {
+                    headers: {
+                        'authorization': `token ${localStorage.getItem('accessToken')}`
+                    }
+                }).then(result => {
+                    if (!result.data.err)
+                        window.location.reload()
+                })
             }
         })
             .catch(err => console.log(err))
@@ -56,8 +64,8 @@ function Maintain({ id }) {
     return (
         <div className='box'>
             <form onSubmit={createClick}>
-                <MDInput label='Name' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, name: event.target.value })} required />
-                <MDInput label='Description' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, description: event.target.value })} required />
+                <MDInput label='สิ่งที่ซ่อม' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, name: event.target.value })} required />
+                <MDInput label='สิ่งที่เปลี่ยน' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, description: event.target.value })} required />
                 <br /><br />
                 <Editor
                     editorState={editorState}

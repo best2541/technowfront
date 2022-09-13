@@ -27,45 +27,37 @@ import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DataTable from "examples/Tables/DataTable";
-import MDButton from "components/MDButton";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Station() {
+function Ticket() {
     const [datas, setDatas] = useState([])
 
-    const deleteClick = (id) => {
-        axios.post(`${process.env.REACT_APP_API}/station/delete/${id}`, '', {
-            headers: {
-                'authorization': `token ${localStorage.getItem('accessToken')}`
-            }
-        })
-            .then(() => setDatas(() => datas.filter(data => data.id != id)))
-            .catch(() => {
-                localStorage.removeItem('accessToken')
-                window.location.href = '/'
-            })
-    }
     const columns = [
         { Header: "Station", accessor: "station", width: "45%", align: "left" },
-        { Header: "Phone", accessor: "tel", align: "center" },
+        { Header: "Ref NO.", accessor: "ref_no", align: "center" },
+        { Header: "Status", accessor: "status", align: "center" },
+        { Header: "Tecnician", accessor: "user", align: "center" },
         { Header: "action", accessor: "action", align: "center" },
     ]
 
     const row = datas.map(data => (
         {
-            station: < MDTypography variant="button" fontWeight="medium" >
+            station: < MDTypography variant="button" fontWeight="medium" component="a" href={`/station/edit/${data.station_id}`}>
                 {data?.name}
             </MDTypography >,
-            tel: < MDTypography variant="button" fontWeight="medium" >
-                {data?.tel}
+            ref_no: < MDTypography variant="button" fontWeight="medium" >
+                {data?.ref_no}
+            </MDTypography>,
+            status: <MDBox ml={-1}>
+                <MDBadge badgeContent={data.status == 0 ? 'Close' : data.status == 1 ? 'Waiting' : data.status == 2 ? 'Pending' : data.status == 3 ? 'Fixed' : 'Close'} color={data.status == 0 ? 'success' : data.status == 3 ? 'warning' : 'error'} variant="gradient" size="sm" />
+            </MDBox>,
+            user: < MDTypography variant="button" fontWeight="medium" >
+                {data?.user}
             </MDTypography>,
             action: <>
-                <MDTypography className='m-1' component="a" href={`/station/edit/${data.id}`} variant="caption" color="text" fontWeight="medium">
+                <MDTypography className='m-1' component="a" href={`/ticket/detail/${data.station_id}`} variant="caption" color="text" fontWeight="medium">
                     Show
-                </MDTypography>
-                <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.id)} variant="caption" color="text" fontWeight="medium">
-                    {window.localStorage.getItem('role') == '1' ? 'Delete' : ''}
                 </MDTypography>
             </>
         }
@@ -73,20 +65,21 @@ function Station() {
     ))
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/station/index`, {
+        axios.get(`${process.env.REACT_APP_API}/station/ticket/index`, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
         }).then(result => {
             if (!result.data.err) {
-                setDatas(result.data.stations)
+                setDatas(result.data.ticket)
             } else {
                 window.localStorage.removeItem('accessToken')
             }
-        }).catch(() => {
-            localStorage.removeItem('accessToken')
-            window.location.href = '/'
         })
+        // .catch(() => {
+        //     localStorage.removeItem('accessToken')
+        //     window.location.href = '/'
+        // })
     }, [])
     return (
         <MDBox pt={6} pb={3}>
@@ -106,17 +99,9 @@ function Station() {
                                     coloredShadow="info"
                                 >
                                     <MDTypography variant="h6" color="white">
-                                        Station
+                                        Ticket
                                     </MDTypography>
                                 </MDBox>
-                            </Grid>
-
-                            <Grid item xs={9}>
-                                <Link to='add'>
-                                    <MDButton className='btn-right' style={{ 'margin-right': '5px' }} size='large' variant="contained" color="warning">
-                                        New
-                                    </MDButton>
-                                </Link>
                             </Grid>
                         </Grid>
                         {datas?.length > 0 &&
@@ -138,4 +123,4 @@ function Station() {
     );
 }
 
-export default Station;
+export default Ticket;

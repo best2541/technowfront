@@ -11,8 +11,9 @@ import StationRoutes from "layouts/station/StationRoutes";
 import MapLayout from "layouts/map/MapLayout";
 import RecordLayout from "layouts/Record/RecordLayout";
 import FormLayout from "layouts/form/FormLayout";
+import TicketLayout from "layouts/Ticket/TicketLayout";
 
-const routes = window.localStorage.getItem('accessToken') && window.localStorage.getItem('role') == 1 ? [
+const routes = window.localStorage.getItem('accessToken') && window.localStorage.getItem('role') == 1 && window.localStorage.getItem('users') == 1 ? [
   {
     type: "collapse",
     name: "Map",
@@ -31,27 +32,27 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
   // },
   {
     type: "collapse",
-    name: "Record",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/record/*",
-    component: <RecordLayout />,
-  },
-  // {
-  //   type: "collapse",
-  //   name: "Notifications",
-  //   key: "notifications",
-  //   icon: <Icon fontSize="small">notifications</Icon>,
-  //   route: "/notifications",
-  //   component: <Notifications />,
-  // },
-  {
-    type: "collapse",
     name: "Station",
     key: "station",
     icon: <Icon fontSize="small">home_work</Icon>,
     route: "/station/*",
     component: <StationRoutes />,
+  },
+  {
+    type: "collapse",
+    name: "Ticket",
+    key: "billing",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/ticket/*",
+    component: <TicketLayout />,
+  },
+  {
+    type: "collapse",
+    name: "Record",
+    key: "billing",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/record/*",
+    component: <RecordLayout />,
   },
   {
     type: "collapse",
@@ -77,21 +78,46 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
   //   route: "/profile",
   //   component: <Profile />,
   // },
+] : window.localStorage.getItem('accessToken') && window.localStorage.getItem('role') == 1 && window.localStorage.getItem('users') == 0 ? [
+  {
+    type: "collapse",
+    name: "Map",
+    key: "map",
+    icon: <Icon fontSize="small">my_location</Icon>,
+    route: "/map/*",
+    component: <MapLayout />,
+  },
+  {
+    type: "collapse",
+    name: "Station",
+    key: "station",
+    icon: <Icon fontSize="small">home_work</Icon>,
+    route: "/station/*",
+    component: <StationRoutes />,
+  },
+  {
+    type: "collapse",
+    name: "Record",
+    key: "billing",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/record/*",
+    component: <RecordLayout />,
+  },
+  {
+    type: "collapse",
+    name: "Form",
+    key: "Form",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/setting/*",
+    component: <FormLayout />,
+  },
   // {
   //   type: "collapse",
-  //   name: "Sign In",
-  //   key: "sign-in",
-  //   icon: <Icon fontSize="small">login</Icon>,
-  //   route: "/authentication/sign-in",
-  //   component: <SignIn />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Sign Up",
-  //   key: "sign-up",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/sign-up",
-  //   component: <SignUp />,
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
   // },
 ] : window.localStorage.getItem('accessToken') ? [
   {
@@ -104,20 +130,28 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
   },
   {
     type: "collapse",
+    name: "Station",
+    key: "station",
+    icon: <Icon fontSize="small">home_work</Icon>,
+    route: "/station/*",
+    component: <StationRoutes />,
+  },
+  {
+    type: "collapse",
+    name: "Ticket",
+    key: "billing",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/ticket/*",
+    component: <TicketLayout />,
+  },
+  {
+    type: "collapse",
     name: "Record",
     key: "billing",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/record/*",
     component: <RecordLayout />,
   },
-  {
-    type: "collapse",
-    name: "Station",
-    key: "station",
-    icon: <Icon fontSize="small">home_work</Icon>,
-    route: "/station/*",
-    component: <StationRoutes />,
-  }
 ] : [
   {
     type: "collapse",

@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import MDButton from 'components/MDButton';
 import axios from 'axios';
+import DataTable from 'examples/Tables/DataTable';
+
+const columns = [
+    { Header: "Name", accessor: "name", align: "left" },
+    { Header: "Link", accessor: "link", align: "left" },
+]
 
 function CctvList({ id }) {
     const [datas, setDatas] = useState([])
 
+    const row = datas.map(data => ({
+        name: data.name,
+        link: <a href='' onClick={() => window.open(`https://${data.link.split('http://' && 'https://').pop()}`)}>{data.link}</a>
+    }))
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/station/Cctv/get/${id}`, {
             headers: {
@@ -19,11 +28,17 @@ function CctvList({ id }) {
     }, [])
     return (
         <div className='box' style={{ 'overflow-y': 'auto' }}>
-            {datas?.map(data => (
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
-                    <span><label>{data.name} : <a href='' onClick={() => window.open(`https://${data.link.split('http://' && 'https://').pop()}`)}>{data.link}</a></label></span>
-                </div>
-            ))
+            {datas &&
+                <>
+                    <DataTable
+                        table={{ columns: columns, rows: row }}
+                        isSorted={true}
+                        entriesPerPage={false}
+                        showTotalEntries={false}
+                        checkboxSelection
+                        noEndBorder
+                    />
+                </>
             }
         </div>
     )

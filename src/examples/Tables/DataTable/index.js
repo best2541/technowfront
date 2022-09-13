@@ -149,7 +149,7 @@ function DataTable({
     <TableContainer sx={{ boxShadow: "none" }}>
       {entriesPerPage || canSearch ? (
         <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-          {entriesPerPage && (
+          {/* {entriesPerPage && (
             <MDBox display="flex" alignItems="center">
               <Autocomplete
                 disableClearable
@@ -166,7 +166,7 @@ function DataTable({
                 &nbsp;&nbsp;entries per page
               </MDTypography>
             </MDBox>
-          )}
+          )} */}
           {canSearch && (
             <MDBox width="12rem" ml="auto">
               <MDInput

@@ -7,16 +7,53 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 import { TextField } from '@mui/material';
+import MDButton from 'components/MDButton';
+import DataTable from "examples/Tables/DataTable";
 
 const RecordDetail = () => {
-    const [since, setSince] = useState({ since: new Date(2000, 1, 1), to: new Date() })
+    const [since, setSince] = useState({
+        since: new Date(new Date().setDate(new Date().getDate() - 3)), to: new Date()
+    })
     const [station, setStation] = useState([])
     const [callback, setCallback] = useState([])
     const [form, setForm] = useState([])
+    const [headers, setHeaders] = useState([])
     const { id } = useParams()
+
+    const demo = (headers).map(header => {
+        const newName = form.filter(f => f.type == 1 && f.key == header)
+        if (newName.length > 0)
+            return { Header: newName[0]?.callback, accessor: header, align: 'center' }
+        else
+            return { Header: header, accessor: header, align: 'center' }
+    })
+    // const test = (headers).map((header, index) => {
+    //     form.filter(f => f.type == 1 && f.key == header)
+    //     if (index == 0) {
+    //         return { Header: header, accessor: header, align: 'center' }
+    //     }
+    //     else
+    //         return { Header: header, accessor: header, align: 'center' }
+    // })
+    demo.unshift({ Header: 'date', accessor: 'create_date', align: 'center' })
+    // test.unshift({ Header: 'date', accessor: 'create_date', align: 'center' })
+
+    const rows = callback.map(call => {
+        const set = JSON.parse(call?.callback)
+        Object.keys(set).map(s => {
+            form.map(f => {
+                if (f.type == 2 && f.key == s) {
+                    set[s] = f.callback
+                }
+            })
+        })
+        set.create_date = new Date(call.create_date).toLocaleString('th')
+        return set
+    }
+    )
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_API}/record/detail/${id}`, { since: since.since, to: since.to }, {
@@ -25,6 +62,7 @@ const RecordDetail = () => {
             }
         }).then(async result => {
             if (!result.data.err) {
+                setHeaders(Object.keys(JSON?.parse(result.data.record[0]?.callback)))
                 setCallback(result.data.record)
                 setStation(result.data?.stations)
             }
@@ -34,17 +72,17 @@ const RecordDetail = () => {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
         }).then(result => setForm(result.data.form))
-        // .catch(() => {
-        //     localStorage.removeItem('accessToken')
-        //     window.location.href = '/'
-        // })
+            .catch(() => {
+                localStorage.removeItem('accessToken')
+                window.location.href = '/'
+            })
     }, [since])
 
     return (
-        <MDBox pt={6} pb={3}>
+        <MDBox>
             <Grid container spacing={6}>
                 <Grid item xs={12}>
-                    <Card >
+                    <Card>
                         <MDBox
                             variant="gradient"
                             bgColor="info"
@@ -56,63 +94,50 @@ const RecordDetail = () => {
                             mb={1}
                             textAlign="center"
                         >
-                            <Link to={`/station/edit/${id}`}>
-                                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                                    {station[0]?.name}
-                                </MDTypography>
-                            </Link>
+                            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                                {station[0]?.name}
+                            </MDTypography>
                         </MDBox>
-                        {station &&
-                            <MDBox pt={4} pb={3} px={3} style={{ 'color': 'white' }}>
-                                <div className='header'>
-                                    <div>
-                                        <TextField
-                                            id="datetime-local"
-                                            label="since"
-                                            type="datetime-local"
-                                            defaultValue={new Date()}
-                                            onChange={(event) => setSince({ ...since, since: event.target.value })}
-                                            sx={{ width: 250 }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <TextField
-                                            id="datetime-local"
-                                            label="to"
-                                            type="datetime-local"
-                                            defaultValue={new Date()}
-                                            onChange={(event) => setSince({ ...since, to: event.target.value })}
-                                            sx={{ width: 250 }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </div>
+                        <MDBox pt={2} pb={3} px={3} style={{ 'color': 'white' }}>
+                            <MDButton variant='text' href={`/station/edit/${id}`} fullWidth>Profile</MDButton>
+
+                            <div className='header'>
+                                <div>
+                                    <TextField
+                                        id="datetime-local"
+                                        label="since"
+                                        type="datetime-local"
+                                        defaultValue={`${since.since.getFullYear()}-${since.since.getMonth() < 10 && '0'}${since.since.getMonth()}-${since.since.getDate() < 10 && '0'}${since.since.getDate()}T${since.since.getHours()}:${since.since.getMinutes()}`}
+                                        onChange={(event) => setSince({ ...since, since: event.target.value })}
+                                        sx={{ width: 250 }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
                                 </div>
-                                <MDBox>
-                                    <Grid container spacing={2}>
-                                        {callback && callback.map(call => {
-                                            const datas = JSON.parse(call.callback)
-                                            return (
-                                                <Grid item xs={6}>
-                                                    <div>{call.create_date}</div>
-                                                    {Object.keys(datas).map(data => (
-                                                        < Grid item xs={6}>
-                                                            <MDTypography>{data} : {form.filter(f => f.key == data && f.value == datas[data]).length != 0 ? form.filter(f => f.key == data && f.value == datas[data]).map(res => res?.callback) : datas[data]}</MDTypography>
-                                                        </Grid>
-                                                    ))}
-                                                </Grid>
-                                            )
-                                        }
-                                        )
-                                        }
-                                    </Grid>
-                                </MDBox>
-                            </MDBox>
-                        }
+                                <div>
+                                    <TextField
+                                        id="datetime-local"
+                                        label="to"
+                                        type="datetime-local"
+                                        defaultValue={`${since.to.getFullYear()}-${since.to.getMonth() < 10 && '0'}${since.to.getMonth()}-${since.to.getDate() < 10 && '0'}${since.to.getDate()}T${since.to.getHours()}:${since.to.getMinutes()}`}
+                                        onChange={(event) => setSince({ ...since, to: event.target.value })}
+                                        sx={{ width: 250 }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <DataTable
+                                table={{ columns: demo, rows: rows }}
+                                isSorted={false}
+                                entriesPerPage={{ defaultValue: 5, entries: [5] }}
+                                showTotalEntries={false}
+                                checkboxSelection
+                                noEndBorder
+                            />
+                        </MDBox>
                     </Card>
                 </Grid>
             </Grid>

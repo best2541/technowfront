@@ -66,6 +66,10 @@ function Basic() {
       if (!result.data.err) {
         window.localStorage.setItem('accessToken', result.data.token)
         window.localStorage.setItem('role', result.data.role)
+        window.localStorage.setItem('users', result.data.users)
+        window.localStorage.setItem('contract', result.data.contract)
+        window.localStorage.setItem('cctv', result.data.cctv)
+        window.localStorage.setItem('maintain', result.data.maintain)
         window.localStorage.setItem('remember', input.username)
         window.location.href = '/map/*'
       } else {

@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -18,15 +18,16 @@ import axios from 'axios';
 
 
 const AccountAdd = () => {
-  const [input, setInput] = useState({})
+  const [input, setInput] = useState({ users: 0, contract: 0, cctv: 0, maintain: 0 })
 
 
   const inputChange = (event) => {
     const { name, value } = event.target
     setInput({
       ...input,
-      [name]: value
+      [name]: name == 'username' || name == 'passowrd' ? value.replace(/[^\w]/g, '') : value
     })
+    console.log(input)
   }
 
   const createClick = (event) => {
@@ -38,7 +39,8 @@ const AccountAdd = () => {
     }).then(result => {
       if (!result.data.err) {
         alert('Creted')
-      }
+      } else
+        alert('Cannot Create')
     }).catch(() => {
       localStorage.removeItem('accessToken')
       window.location.href = '/'
@@ -67,39 +69,112 @@ const AccountAdd = () => {
             <MDBox pt={4} pb={3} px={3}>
               <MDBox component="form" role="form">
                 <MDBox mb={2}>
-                  <MDInput name='username' type="text" label="Username" variant="standard" fullWidth
+                  <MDInput name='username' type="text" label="Username" value={input?.username} variant="standard" fullWidth required
                     onChange={inputChange}
                   />
                 </MDBox>
                 <MDBox mb={2}>
-                  <MDInput name='password' type="password" label="Password" variant="standard" fullWidth
+                  <MDInput name='password' type="password" label="Password" value={input?.password} variant="standard" fullWidth required
                     onChange={inputChange}
                   />
                 </MDBox>
                 <MDBox mb={2}>
-                  <MDInput name='confirmPassword' type="password" label="Confirm Password" variant="standard" fullWidth
+                  <MDInput name='confirmPassword' type="password" label="Confirm Password" value={input?.confirmPassword} variant="standard" fullWidth required
                     onChange={inputChange}
                   />
                 </MDBox>
-                {/* <MDBox mb={2}> */}
                 <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
                   <InputLabel id="demo-simple-select-standard-label">Role</InputLabel>
                   <Select
                     name='role'
+                    className='text'
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     onChange={inputChange}
-                    label="Age"
+                    label="Role"
                     fullWidth
                   >
                     <MenuItem value={1}>Monitor</MenuItem>
                     <MenuItem value={2}>Maintenance Technician</MenuItem>
                   </Select>
                 </FormControl>
+                {input.role == 1 &&
+                  <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                    <InputLabel id="demo-simple-select-standard-label">Account setting</InputLabel>
+                    <Select
+                      name='users'
+                      className='text'
+                      labelId="demo-simple-select-standard-label"
+                      id="demo-simple-select-standard"
+                      onChange={inputChange}
+                      label="users"
+                      value={input.users}
+                      fullWidth
+                    >
+                      <MenuItem value={0}>Denied</MenuItem>
+                      <MenuItem value={1}>Accessible</MenuItem>
+                    </Select>
+                  </FormControl>
+                }
+                {input.role == 2 &&
+                  <>
+                    <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                      <InputLabel id="demo-simple-select-standard-label">Contract</InputLabel>
+                      <Select
+                        name='contract'
+                        className='text'
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        onChange={inputChange}
+                        label="contract"
+                        value={input.contract}
+                        fullWidth
+                      >
+                        <MenuItem value={0}>Denied</MenuItem>
+                        <MenuItem value={1}>Read only</MenuItem>
+                        <MenuItem value={2}>Read/Edit</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                      <InputLabel id="demo-simple-select-standard-label">CCTV</InputLabel>
+                      <Select
+                        name='cctv'
+                        className='text'
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        onChange={inputChange}
+                        label="cctv"
+                        value={input.cctv}
+                        fullWidth
+                      >
+                        <MenuItem value={0}>Denied</MenuItem>
+                        <MenuItem value={1}>Read only</MenuItem>
+                        <MenuItem value={2}>Read/Edit</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                      <InputLabel id="demo-simple-select-standard-label">Maintain</InputLabel>
+                      <Select
+                        name='maintain'
+                        className='text'
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        onChange={inputChange}
+                        label="maintain"
+                        value={input.maintain}
+                        fullWidth
+                      >
+                        <MenuItem value={0}>Denied</MenuItem>
+                        <MenuItem value={1}>Read only</MenuItem>
+                        {/* <MenuItem value={2}>Read/Edit</MenuItem> */}
+                      </Select>
+                    </FormControl>
+                  </>
+                }
               </MDBox>
               <MDBox mt={4} mb={1}>
-                <MDButton variant="gradient" color="success" fullWidth onClick={createClick}>
-                  Create
+                <MDButton variant="gradient" color={input.password != input.confirmPassword ? "error" : "success"} fullWidth onClick={createClick} disabled={input.password != input.confirmPassword || !input.password}>
+                  {input.password == input.confirmPassword ? "Create" : "Password is not same"}
                 </MDButton>
                 {/* </MDBox> */}
               </MDBox>
