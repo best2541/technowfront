@@ -67,8 +67,8 @@ function Map() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   {datas?.map(data => {
-                    const call = data?.callback && JSON?.parse(data.callback)
-                    if (call?.API_CODE == '-504' || call?.ALARM != 0 || call.DCV < 11.8 || call.DCV > 13 || data.status != 0) {
+                    // const call = data?.callback && JSON?.parse(data.callback)
+                    if (data.status == 1) {
                       if (error)
                         return (
                           <Marker position={[data.lati, data.long]} icon={new Icon({

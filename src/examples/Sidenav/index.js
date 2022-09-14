@@ -65,6 +65,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   const logoutClick = () => {
     window.localStorage.removeItem('accessToken')
+    window.localStorage.removeItem('form')
+    window.localStorage.removeItem('user')
+    window.localStorage.removeItem('role')
+    window.localStorage.removeItem('contract')
+    window.localStorage.removeItem('maintain')
     window.location.href = '/authentication/sign-in'
   }
 

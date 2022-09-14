@@ -70,6 +70,7 @@ function Basic() {
         window.localStorage.setItem('contract', result.data.contract)
         window.localStorage.setItem('cctv', result.data.cctv)
         window.localStorage.setItem('maintain', result.data.maintain)
+        window.localStorage.setItem('form', result.data.form)
         window.localStorage.setItem('remember', input.username)
         window.location.href = '/map/*'
       } else {

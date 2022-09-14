@@ -18,7 +18,7 @@ import axios from 'axios';
 
 
 const AccountAdd = () => {
-  const [input, setInput] = useState({ users: 0, contract: 0, cctv: 0, maintain: 0 })
+  const [input, setInput] = useState({ users: 0, contract: 0, cctv: 0, maintain: 0, form: 0 })
 
 
   const inputChange = (event) => {
@@ -99,6 +99,7 @@ const AccountAdd = () => {
                   </Select>
                 </FormControl>
                 {input.role == 1 &&
+                <>
                   <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
                     <InputLabel id="demo-simple-select-standard-label">Account setting</InputLabel>
                     <Select
@@ -115,6 +116,23 @@ const AccountAdd = () => {
                       <MenuItem value={1}>Accessible</MenuItem>
                     </Select>
                   </FormControl>
+                  <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                    <InputLabel id="demo-simple-select-standard-label">Form setting</InputLabel>
+                    <Select
+                      name='form'
+                      className='text'
+                      labelId="demo-simple-select-standard-label"
+                      id="demo-simple-select-standard"
+                      onChange={inputChange}
+                      label="form"
+                      value={input.form}
+                      fullWidth
+                    >
+                      <MenuItem value={0}>Denied</MenuItem>
+                      <MenuItem value={1}>Accessible</MenuItem>
+                    </Select>
+                  </FormControl>
+                </>
                 }
                 {input.role == 2 &&
                   <>

@@ -62,14 +62,14 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
     route: "/accounts/*",
     component: <AccountLayout />,
   },
-  {
-    type: "collapse",
-    name: "Form",
-    key: "Form",
-    icon: <Icon fontSize="small">settings</Icon>,
-    route: "/setting/*",
-    component: <FormLayout />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Form",
+  //   key: "Form",
+  //   icon: <Icon fontSize="small">settings</Icon>,
+  //   route: "/setting/*",
+  //   component: <FormLayout />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Profile",
@@ -103,14 +103,14 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
     route: "/record/*",
     component: <RecordLayout />,
   },
-  {
-    type: "collapse",
-    name: "Form",
-    key: "Form",
-    icon: <Icon fontSize="small">settings</Icon>,
-    route: "/setting/*",
-    component: <FormLayout />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Form",
+  //   key: "Form",
+  //   icon: <Icon fontSize="small">settings</Icon>,
+  //   route: "/setting/*",
+  //   component: <FormLayout />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Profile",
@@ -170,5 +170,12 @@ const routes = window.localStorage.getItem('accessToken') && window.localStorage
     component: <SignUp />,
   },
 ]
-
+window.localStorage.getItem('form') == 1 && routes.push({
+  type: "collapse",
+  name: "Form",
+  key: "Form",
+  icon: <Icon fontSize="small">settings</Icon>,
+  route: "/setting/*",
+  component: <FormLayout />,
+})
 export default routes;

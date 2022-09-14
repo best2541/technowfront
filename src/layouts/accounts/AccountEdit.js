@@ -156,6 +156,32 @@ const AccountEdit = () => {
                           </Select>
                         </FormControl>
                       </Grid>
+                      <Grid item xs={2}>
+                        <MDTypography>
+                          Form Setting
+                        </MDTypography>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <MDTypography variant='span'>
+                          :
+                        </MDTypography>
+                        <FormControl variant="standard" sx={{ minWidth: 120, width: '99%' }}>
+                          <InputLabel id="demo-simple-select-standard-label"></InputLabel>
+                          <Select
+                            name='form'
+                            className='text'
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            onChange={inputChange}
+                            label="form"
+                            value={datas.form}
+                            fullWidth
+                          >
+                            <MenuItem value={0}>Denied</MenuItem>
+                            <MenuItem value={1}>Accessible</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
                     </>
                   }
                   {datas.role == 2 &&
