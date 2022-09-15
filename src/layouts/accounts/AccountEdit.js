@@ -262,7 +262,7 @@ const AccountEdit = () => {
                             fullWidth
                           >
                             <MenuItem value={0}>Denied</MenuItem>
-                            <MenuItem value={1}>Read only</MenuItem>
+                            <MenuItem value={1}>Accessible</MenuItem>
                             {/* <MenuItem value={2}>Read/Edit</MenuItem> */}
                           </Select>
                         </FormControl>

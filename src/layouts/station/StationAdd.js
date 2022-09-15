@@ -23,13 +23,13 @@ const StationAdd = () => {
   }
   const addClick = () => {
     let formData = new FormData()
-    formData.append('name', input?.name)
-    formData.append('tel', input?.tel)
-    formData.append('url', input?.url)
+    formData.append('name', input.name)
+    formData.append('tel', input?.tel || '')
+    formData.append('url', input?.url || '')
     formData.append('long', input?.long || 0)
     formData.append('lati', input?.lati || 0)
-    formData.append('key', input?.key)
-    formData.append('img_name', input?.name)
+    formData.append('key', input?.key || '')
+    formData.append('img_name', input.name)
     formData.append('file', input?.img)
     axios.post(`${process.env.REACT_APP_API}/station/new`, formData, {
       headers: {
@@ -66,52 +66,54 @@ const StationAdd = () => {
                 Create New Station
               </MDTypography>
             </MDBox>
-            <MDBox pt={4} pb={3} px={3}>
-              <MDBox component="form" role="form">
-                <MDBox mb={2}>
-                  <MDInput name='name' type="text" label="Station Name" variant="standard" fullWidth onChange={inputChange} />
+            <form onSubmit={input.name && addClick}>
+              <MDBox pt={4} pb={3} px={3}>
+                <MDBox component="form" role="form">
+                  <MDBox mb={2}>
+                    <MDInput name='name' type="text" label="Station Name" variant="standard" fullWidth onChange={inputChange} error={!input.name} />
+                  </MDBox>
+                  <MDBox mb={2}>
+                    <MDInput name='tel' type="tel" label="Tel" variant="standard" fullWidth onChange={inputChange} />
+                  </MDBox>
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput name='url' type="text" label="Url" variant="standard" value={input.url} fullWidth onChange={inputChange} />
+                      </MDBox>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput name='key' type="text" label="Key" variant="standard" value={input.key} fullWidth onChange={inputChange} />
+                      </MDBox>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput name='lati' type="number" label="Latitude" variant="standard" fullWidth onChange={inputChange} />
+                      </MDBox>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput name='long' type="number" label="Longtitude" variant="standard" fullWidth onChange={inputChange} />
+                      </MDBox>
+                    </Grid>
+                  </Grid>
                 </MDBox>
-                <MDBox mb={2}>
-                  <MDInput name='tel' type="tel" label="Tel" variant="standard" fullWidth onChange={inputChange} />
-                </MDBox>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <MDBox mb={2}>
-                      <MDInput name='url' type="text" label="Url" variant="standard" value={input.url} fullWidth onChange={inputChange} />
-                    </MDBox>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <MDBox mb={2}>
-                      <MDInput name='key' type="text" label="Key" variant="standard" value={input.key} fullWidth onChange={inputChange} />
-                    </MDBox>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <MDBox mb={2}>
-                      <MDInput name='lati' type="number" label="Latitude" variant="standard" fullWidth onChange={inputChange} />
-                    </MDBox>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <MDBox mb={2}>
-                      <MDInput name='long' type="number" label="Longtitude" variant="standard" fullWidth onChange={inputChange} />
-                    </MDBox>
-                  </Grid>
-                </Grid>
-              </MDBox>
-              {/* <MDBox>
+                {/* <MDBox>
                 <span style={{ color: 'white' }}>IMG : </span>
                 <input name='img' type="file" style={{ color: 'white' }} onChange={(event) => setInput({
                   ...input,
                   img: event.target.files[0]
                 })} />
               </MDBox> */}
-              <MDBox mt={4} mb={1}>
-                <MDButton variant="gradient" color="success" onClick={() => addClick()} fullWidth>
-                  Create
-                </MDButton>
+                <MDBox mt={4} mb={1}>
+                  <MDButton variant="gradient" color="success" type='submit' fullWidth>
+                    Create
+                  </MDButton>
+                </MDBox>
               </MDBox>
-            </MDBox>
+            </form>
           </Card>
         </Grid>
       </Grid>
