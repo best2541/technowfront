@@ -94,45 +94,45 @@ const AccountAdd = () => {
                     label="Role"
                     fullWidth
                   >
-                    <MenuItem value={1}>Monitor</MenuItem>
-                    <MenuItem value={2}>Maintenance Technician</MenuItem>
+                    <MenuItem value={1}><MDTypography variant="button">Monitor</MDTypography></MenuItem>
+                    <MenuItem value={2}><MDTypography variant="button">Maintenance Technician</MDTypography></MenuItem>
                   </Select>
                 </FormControl>
                 {input.role == 1 &&
-                <>
-                  <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
-                    <InputLabel id="demo-simple-select-standard-label">Account setting</InputLabel>
-                    <Select
-                      name='users'
-                      className='text'
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      onChange={inputChange}
-                      label="users"
-                      value={input.users}
-                      fullWidth
-                    >
-                      <MenuItem value={0}>Denied</MenuItem>
-                      <MenuItem value={1}>Accessible</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
-                    <InputLabel id="demo-simple-select-standard-label">Form setting</InputLabel>
-                    <Select
-                      name='form'
-                      className='text'
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      onChange={inputChange}
-                      label="form"
-                      value={input.form}
-                      fullWidth
-                    >
-                      <MenuItem value={0}>Denied</MenuItem>
-                      <MenuItem value={1}>Accessible</MenuItem>
-                    </Select>
-                  </FormControl>
-                </>
+                  <>
+                    <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                      <InputLabel id="demo-simple-select-standard-label">Account setting</InputLabel>
+                      <Select
+                        name='users'
+                        className='text'
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        onChange={inputChange}
+                        label="users"
+                        value={input.users}
+                        fullWidth
+                      >
+                        <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                        <MenuItem value={1}><MDTypography variant="button">Accessible</MDTypography></MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
+                      <InputLabel id="demo-simple-select-standard-label">Form setting</InputLabel>
+                      <Select
+                        name='form'
+                        className='text'
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        onChange={inputChange}
+                        label="form"
+                        value={input.form}
+                        fullWidth
+                      >
+                        <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                        <MenuItem value={1}><MDTypography variant="button">Accessible</MDTypography></MenuItem>
+                      </Select>
+                    </FormControl>
+                  </>
                 }
                 {input.role == 2 &&
                   <>
@@ -148,9 +148,9 @@ const AccountAdd = () => {
                         value={input.contract}
                         fullWidth
                       >
-                        <MenuItem value={0}>Denied</MenuItem>
-                        <MenuItem value={1}>Read only</MenuItem>
-                        <MenuItem value={2}>Read/Edit</MenuItem>
+                        <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                        <MenuItem value={1}><MDTypography variant="button">Read only</MDTypography></MenuItem>
+                        <MenuItem value={2}><MDTypography variant="button">Read/Edit</MDTypography></MenuItem>
                       </Select>
                     </FormControl>
                     <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
@@ -165,9 +165,9 @@ const AccountAdd = () => {
                         value={input.cctv}
                         fullWidth
                       >
-                        <MenuItem value={0}>Denied</MenuItem>
-                        <MenuItem value={1}>Read only</MenuItem>
-                        <MenuItem value={2}>Read/Edit</MenuItem>
+                        <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                        <MenuItem value={1}><MDTypography variant="button">Read only</MDTypography></MenuItem>
+                        <MenuItem value={2}><MDTypography variant="button">Read/Edit</MDTypography></MenuItem>
                       </Select>
                     </FormControl>
                     <FormControl variant="standard" sx={{ mb: 2, minWidth: 120 }} fullWidth>
@@ -182,9 +182,8 @@ const AccountAdd = () => {
                         value={input.maintain}
                         fullWidth
                       >
-                        <MenuItem value={0}>Denied</MenuItem>
-                        <MenuItem value={1}>Accessible</MenuItem>
-                        {/* <MenuItem value={2}>Read/Edit</MenuItem> */}
+                        <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                        <MenuItem value={1}><MDTypography variant="button">Accessible</MDTypography></MenuItem>
                       </Select>
                     </FormControl>
                   </>

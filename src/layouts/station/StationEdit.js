@@ -21,6 +21,7 @@ import MaintainList from './MaintainList';
 import Cctv from './Cctv';
 import CctvList from './CctvList';
 import Ticket from './Ticket';
+import MDTypography from 'components/MDTypography';
 
 const StationEdit = () => {
     const [input, setInput] = useState([])
@@ -132,7 +133,14 @@ const StationEdit = () => {
                         </MDBox>
                         {input?.id &&
                             <MDBox pt={4} pb={3} px={3}>
-                                <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Logs</MDButton>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Logs</MDButton>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <MDButton variant='text' href={`/ticket/detail/${id}`} fullWidth>Tickets</MDButton>
+                                    </Grid>
+                                </Grid>
                                 <MDBox component="form" role="form">
                                     <MDBox mb={2}>
                                         <MDInput name='name' type="text" label="Station Name" variant="standard" value={input.name} fullWidth onChange={inputChange} />
@@ -166,7 +174,7 @@ const StationEdit = () => {
                                     </Grid>
                                 </MDBox>
                                 <MDBox>
-                                    <span style={{ color: 'white' }}>IMG : </span>
+                                    <span><MDTypography component='span'>IMG : </MDTypography></span>
                                     {/* {input[0].img &&
                                         <img
                                             src={`${process.env.REACT_APP_API}${input[0]?.img}`}

@@ -122,6 +122,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
       return colorValue;
     },
   });
+  const searchEnter = (event) => {
+    if (event.key == "Enter")
+      window.location.href = `/station?name=${event.target.value}`
+  }
 
   return (
     <AppBar
@@ -135,9 +139,31 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            {/* <MDBox pr={1}>
-              <MDInput label="Search here" />
-            </MDBox> */}
+            <MDBox pr={1}>
+              <div>
+                <MDInput label="Search here" onKeyPress={searchEnter} />
+                {/* <ul style={{
+                  position: 'absolute',
+                  top: 50,
+                  justifyContent: "normal",
+                  fontSize: 20,
+                  color: "blue",
+                  margin: 1,
+                  width: "170px",
+                  BorderColor: "green",
+                  borderWidth: "10px",
+                  backgroundColor: 'gray',
+                  zIndex: '99'
+                }}>
+                  <li>sdlfkj</li>
+                  <li>sdlfkj</li>
+                  <li>sdlfkj</li>
+                  <li>sdlfkj</li>
+                  <li>sdlfkj</li>
+                  <li>sdlfkj</li>
+                </ul> */}
+              </div>
+            </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
               {/* <Link to="/authentication/sign-in/basic">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>

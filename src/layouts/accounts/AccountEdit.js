@@ -123,8 +123,8 @@ const AccountEdit = () => {
                         style={{ 'color': 'white' }}
                         value={datas?.role}
                       >
-                        <MenuItem value={'1'}>Monitor</MenuItem>
-                        <MenuItem value={'2'}>Maintenance Technician</MenuItem>
+                        <MenuItem value={'1'}><MDTypography variant="button">Monitor</MDTypography></MenuItem>
+                        <MenuItem value={'2'}><MDTypography variant="button">Maintenance Technician</MDTypography></MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -151,8 +151,8 @@ const AccountEdit = () => {
                             value={datas.users}
                             fullWidth
                           >
-                            <MenuItem value={0}>Denied</MenuItem>
-                            <MenuItem value={1}>Accessible</MenuItem>
+                            <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                            <MenuItem value={1}><MDTypography variant="button">Accessible</MDTypography></MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -177,8 +177,8 @@ const AccountEdit = () => {
                             value={datas.form}
                             fullWidth
                           >
-                            <MenuItem value={0}>Denied</MenuItem>
-                            <MenuItem value={1}>Accessible</MenuItem>
+                            <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                            <MenuItem value={1}><MDTypography variant="button">Accessible</MDTypography></MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -207,9 +207,9 @@ const AccountEdit = () => {
                             value={datas.contract}
                             fullWidth
                           >
-                            <MenuItem value={0}>Denied</MenuItem>
-                            <MenuItem value={1}>Read only</MenuItem>
-                            <MenuItem value={2}>Read/Edit</MenuItem>
+                            <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                            <MenuItem value={1}><MDTypography variant="button">Read only</MDTypography></MenuItem>
+                            <MenuItem value={2}><MDTypography variant="button">Read/Edit</MDTypography></MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -234,9 +234,9 @@ const AccountEdit = () => {
                             value={datas.cctv}
                             fullWidth
                           >
-                            <MenuItem value={0}>Denied</MenuItem>
-                            <MenuItem value={1}>Read only</MenuItem>
-                            <MenuItem value={2}>Read/Edit</MenuItem>
+                            <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                            <MenuItem value={1}><MDTypography variant="button">Read only</MDTypography></MenuItem>
+                            <MenuItem value={2}><MDTypography variant="button">Read/Edit</MDTypography></MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -261,8 +261,8 @@ const AccountEdit = () => {
                             value={datas.maintain}
                             fullWidth
                           >
-                            <MenuItem value={0}>Denied</MenuItem>
-                            <MenuItem value={1}>Accessible</MenuItem>
+                            <MenuItem value={0}><MDTypography variant="button">Denied</MDTypography></MenuItem>
+                            <MenuItem value={1}><MDTypography variant="button">Accessible</MDTypography></MenuItem>
                             {/* <MenuItem value={2}>Read/Edit</MenuItem> */}
                           </Select>
                         </FormControl>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -7,6 +7,7 @@ import MDButton from 'components/MDButton';
 import axios from 'axios';
 import createImagePlugin from "draft-js-image-plugin";
 import MDInput from 'components/MDInput';
+import { useMaterialUIController } from "context";
 
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
@@ -62,7 +63,7 @@ function Maintain({ id, ref_no }) {
     }
 
     return (
-        <div className='box'>
+        <div className={useMaterialUIController()[0].darkMode ? 'box' : 'white-box'}>
             <form onSubmit={createClick}>
                 <MDInput label='สิ่งที่ซ่อม' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, name: event.target.value })} required />
                 <MDInput label='สิ่งที่เปลี่ยน' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, description: event.target.value })} required />

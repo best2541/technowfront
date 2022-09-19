@@ -3,6 +3,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MDButton from 'components/MDButton';
 import MDInput from 'components/MDInput';
 import axios from 'axios';
+import { useMaterialUIController } from "context";
 
 function Contract({ id
 }) {
@@ -25,7 +26,7 @@ function Contract({ id
             })
     }
     return (
-        <div className='box'>
+        <div className={useMaterialUIController()[0].darkMode ? 'box' : 'white-box'}>
             <form onSubmit={createClick}>
                 <label>สัญญา : </label> <input type='file' onChange={(event) => setInput({ ...input, file: event.target.files[0] })} required />
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>

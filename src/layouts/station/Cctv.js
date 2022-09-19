@@ -3,11 +3,11 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import MDButton from 'components/MDButton';
 import MDInput from 'components/MDInput';
 import axios from 'axios';
+import { useMaterialUIController } from "context";
 
 function Cctv({ id
 }) {
     const [input, setInput] = useState()
-
     const createClick = (event) => {
         event.preventDefault()
         axios.post(`${process.env.REACT_APP_API}/station/cctv/new`, {
@@ -25,7 +25,7 @@ function Cctv({ id
             })
     }
     return (
-        <div className='box'>
+        <div className={useMaterialUIController()[0].darkMode ? 'box' : 'white-box'}>
             <form onSubmit={createClick}>
                 <MDInput label='Name' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, name: event.target.value })} required />
                 <MDInput label='Link' type='text' variant="standard" fullWidth onChange={(event) => setInput({ ...input, link: event.target.value })} required />

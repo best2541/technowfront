@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import axios from 'axios';
 import DataTable from 'examples/Tables/DataTable';
+import { useMaterialUIController } from "context";
 
 const columns = [
     { Header: "Name", accessor: "name", align: "left" },
@@ -27,7 +28,7 @@ function CctvList({ id }) {
             })
     }, [])
     return (
-        <div className='box' style={{ 'overflow-y': 'auto' }}>
+        <div className={useMaterialUIController()[0].darkMode ? 'box' : 'white-box'} style={{ 'overflow-y': 'auto' }}>
             {datas &&
                 <>
                     <DataTable

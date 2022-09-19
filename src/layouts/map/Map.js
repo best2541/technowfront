@@ -58,7 +58,7 @@ function Map() {
                 </MDBox>
               </Grid>
               <Grid item xs={9}>
-                <Checkbox className='right-btn' checked={working} onClick={() => setWorking(!working)} /> <label className='text'>working</label> <Checkbox className='right-btn' checked={error} onClick={() => setError(!error)} /> <label className='text'>error</label>
+                <Checkbox className='right-btn' checked={working} onClick={() => setWorking(!working)} /> <MDTypography variant="button">working</MDTypography> <Checkbox className='right-btn' checked={error} onClick={() => setError(!error)} /> <MDTypography variant="button">error</MDTypography>
               </Grid>
               <Grid item xs={12}>
                 <MapContainer style={{ height: '500px', width: '100%' }} center={[12, 102]} zoom={5} scrollWheelZoom={false}>

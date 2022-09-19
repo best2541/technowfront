@@ -12,6 +12,11 @@ import MDTypography from 'components/MDTypography';
 import { TextField } from '@mui/material';
 import MDButton from 'components/MDButton';
 import DataTable from "examples/Tables/DataTable";
+import ReactExport from "react-export-excel-xlsx-fix";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 const RecordDetail = () => {
     const [since, setSince] = useState({
@@ -55,6 +60,9 @@ const RecordDetail = () => {
     }
     )
 
+    let dataSet = [{ columns: [], data: [] }]
+    demo.map(data => dataSet[0].columns.push(data.Header))
+    rows.map((data, index) => dataSet[0].data.push(Object.values(data)))
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_API}/record/detail/${id}`, { since: since.since, to: since.to }, {
             headers: {
@@ -79,7 +87,7 @@ const RecordDetail = () => {
     }, [since])
 
     return (
-        <MDBox>
+        <MDBox pt={6} pb={3}>
             <Grid container spacing={6}>
                 <Grid item xs={12}>
                     <Card>
@@ -99,8 +107,19 @@ const RecordDetail = () => {
                             </MDTypography>
                         </MDBox>
                         <MDBox pt={2} pb={3} px={3} style={{ 'color': 'white' }}>
-                            <MDButton variant='text' href={`/station/edit/${id}`} fullWidth>Profile</MDButton>
-
+                            <Grid container spacing={6}>
+                                <Grid item xs={4}>
+                                    <MDButton variant='text' href={`/station/edit/${id}`} fullWidth>Profile</MDButton>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <MDButton variant='text' href={`/ticket/detail/${id}`} fullWidth>Tickets</MDButton>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <ExcelFile element={<MDButton fullWidth>Download Data</MDButton>}>
+                                        <ExcelSheet dataSet={dataSet} name="Organization" />
+                                    </ExcelFile>
+                                </Grid>
+                            </Grid>
                             <div className='header'>
                                 <div>
                                     <TextField

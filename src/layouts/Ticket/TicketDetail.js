@@ -25,9 +25,16 @@ import MDBadge from "components/MDBadge";
 
 // Material Dashboard 2 React example components
 import DataTable from "examples/Tables/DataTable";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import MDButton from "components/MDButton";
+import ReactExport from "react-export-excel-xlsx-fix";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
 
 function TicketDetail() {
     const [datas, setDatas] = useState([])
@@ -109,10 +116,31 @@ function TicketDetail() {
                                     </MDTypography>
                                 </MDBox>
                             </Grid>
+                            <Grid item xs={3}>
+                                <MDButton variant='text' href={`/station/edit/${id}`} fullWidth>Profile</MDButton>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Record</MDButton>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <ExcelFile element={<MDButton>Download Data</MDButton>}>
+                                    <ExcelSheet data={datas} name="Employees">
+                                        <ExcelColumn label="Ref NO." value="ref_no" />
+                                        <ExcelColumn label="Status"
+                                            value={(col) => col.status == 1 ? "Waiting" : col.status == 2 ? "Pending" : col.status == 3 ? 'Fixed' : 'Close'} />
+                                        <ExcelColumn label="Create Date" value={(col) => new Date(col.create_date).toLocaleDateString('th')} />
+                                        <ExcelColumn label="Pending Date" value={(col) => new Date(col.pending_date).toLocaleDateString('th')} />
+                                        <ExcelColumn label="Fixed Date" value={(col) => new Date(col.fixed_date).toLocaleDateString('th')} />
+                                        <ExcelColumn label="Technician" value='user' />
+                                    </ExcelSheet>
+                                </ExcelFile>
+                            </Grid>
                         </Grid>
+
                         {datas?.length > 0 &&
                             <MDBox pt={3}>
                                 <DataTable
+                                    id='datasTable'
                                     table={{ columns, rows: row }}
                                     isSorted={true}
                                     entriesPerPage={false}

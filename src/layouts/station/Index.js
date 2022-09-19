@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -33,6 +33,7 @@ import axios from 'axios';
 
 function Station() {
     const [datas, setDatas] = useState([])
+    const [searchParams, etSearchParams] = useSearchParams()
 
     const deleteClick = (id) => {
         axios.post(`${process.env.REACT_APP_API}/station/delete/${id}`, '', {
@@ -73,7 +74,7 @@ function Station() {
     ))
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/station/index`, {
+        axios.get(`${process.env.REACT_APP_API}/station/index?name=${searchParams.get('name') || ''}`, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }

@@ -2,6 +2,7 @@ import axios from 'axios';
 import DataTable from 'examples/Tables/DataTable';
 import React, { useState, useEffect } from 'react'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useMaterialUIController } from "context";
 
 const columns = [
     { Header: "Ref", accessor: "id", align: "left" },
@@ -32,7 +33,7 @@ function MaintainList({ id }) {
         }).then(result => setDatas(result.data?.maintain))
     }, [])
     return (
-        <div className='box' style={{ 'overflow-y': 'auto' }}>
+        <div className={useMaterialUIController()[0].darkMode ? 'box' : 'white-box'} style={{ 'overflow-y': 'auto' }}>
             {!select ?
                 <>
                     <DataTable
