@@ -30,8 +30,8 @@ function Map() {
       setDatas(result.data.stations)
     })
       .catch((err) => {
-        // localStorage.removeItem('accessToken')
-        // window.location.href = '/'
+        localStorage.removeItem('accessToken')
+        window.location.href = '/'
         console.log(err)
       })
   }, [])

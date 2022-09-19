@@ -27,7 +27,6 @@ const AccountAdd = () => {
       ...input,
       [name]: name == 'username' || name == 'passowrd' ? value.replace(/[^\w]/g, '') : value
     })
-    console.log(input)
   }
 
   const createClick = (event) => {

@@ -76,10 +76,10 @@ function Ticket() {
                 window.localStorage.removeItem('accessToken')
             }
         })
-        // .catch(() => {
-        //     localStorage.removeItem('accessToken')
-        //     window.location.href = '/'
-        // })
+        .catch(() => {
+            localStorage.removeItem('accessToken')
+            window.location.href = '/'
+        })
     }, [])
     return (
         <MDBox pt={6} pb={3}>
