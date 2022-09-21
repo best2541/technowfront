@@ -135,7 +135,7 @@ const StationEdit = () => {
                             <MDBox pt={4} pb={3} px={3}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Logs</MDButton>
+                                        <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Records</MDButton>
                                     </Grid>
                                     <Grid item xs={6}>
                                         <MDButton variant='text' href={`/ticket/detail/${id}`} fullWidth>Tickets</MDButton>
