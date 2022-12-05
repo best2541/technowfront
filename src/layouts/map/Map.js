@@ -9,9 +9,8 @@ import Checkbox from '@mui/material/Checkbox';
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 // import MDButton from "components/MDButton";
-
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import { Icon } from 'leaflet'
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import axios from 'axios';
@@ -32,7 +31,7 @@ function Map() {
       .catch((err) => {
         localStorage.removeItem('accessToken')
         window.location.href = '/'
-        console.log(err)
+        // console.log(err)
       })
   }, [])
   return (
@@ -71,26 +70,32 @@ function Map() {
                     if (data.status == 1) {
                       if (error)
                         return (
-                          <Marker position={[data.lati, data.long]} icon={new Icon({
-                            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Google_Maps_pin.svg/585px-Google_Maps_pin.svg.png', iconSize: [25, 41], iconAnchor: [12, 41]
-                          })}>
-                            < Popup >
-                              {data.name} < Link to={`/record/detail/${data.id}`
-                              } > <a>click</a></Link>
-                            </Popup>
-                          </Marker>
+                          <>
+                            <Marker position={[data.lati, data.long]} icon={new Icon({
+                              iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Google_Maps_pin.svg/585px-Google_Maps_pin.svg.png', iconSize: [25, 41], iconAnchor: [12, 41]
+                            })}>
+                              < Popup >
+                                {data.name} < Link to={`/record/detail/${data.id}`
+                                } > <a>click</a></Link>
+                              </Popup>
+                              <Tooltip direction="right" offset={[0, 0]} opacity={0.7} permanent>{data.name}</Tooltip>
+                            </Marker>
+                          </>
                         )
                     } else {
                       if (working)
                         return (
-                          <Marker position={[data.lati, data.long]} icon={new Icon({
-                            iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]
-                          })}>
-                            < Popup >
-                              {data.name} < Link to={`/record/detail/${data.id}`
-                              } > <a>click</a></Link>
-                            </Popup>
-                          </Marker>
+                          <>
+                            <Marker position={[data.lati, data.long]} icon={new Icon({
+                              iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]
+                            })}>
+                              < Popup >
+                                {data.name} < Link to={`/record/detail/${data.id}`
+                                } > <a>click</a></Link>
+                              </Popup>
+                              <Tooltip direction="right" offset={[0, 0]} opacity={0.7} permanent>{data.name}</Tooltip>
+                            </Marker>
+                          </>
                         )
                     }
                   })}

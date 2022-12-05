@@ -35,9 +35,11 @@ function Record() {
         <MDBadge badgeContent={data.status == '0' ? 'FINE' : 'ALERT'} color={data.status == '0' ? 'success' : 'error'} variant="gradient" size="sm" />
       </MDBox>,
       action: <>
-        <MDTypography className='m-1' component="a" href={`/record/detail/${data.id}`} variant="caption" color="text" fontWeight="medium">
-          Show
-        </MDTypography>
+        <Link to={`/record/detail/${data.id}`}>
+          <MDTypography className='m-1' component="a" href={`/record/detail/${data.id}`} variant="caption" color="text" fontWeight="medium">
+            Show
+          </MDTypography>
+        </Link>
       </>
     }
   ))

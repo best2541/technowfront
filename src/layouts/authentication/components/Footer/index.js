@@ -50,18 +50,7 @@ function Footer({ light }) {
             color={light ? "white" : "text"}
             fontSize={size.sm}
           >
-            &copy; {new Date().getFullYear()}, made with
-            <MDBox fontSize={size.md} color={light ? "white" : "dark"} mb={-0.5} mx={0.25}>
-              <Icon color="inherit" fontSize="inherit">
-                favorite
-              </Icon>
-            </MDBox>
-            by
-            <Link href="https://www.creative-tim.com/" target="_blank">
-              <MDTypography variant="button" fontWeight="medium" color={light ? "white" : "dark"}>
-                &nbsp;ORANGE TECHNOLOGY SOLUTION&nbsp;
-              </MDTypography>
-            </Link>
+            ©2022 All right reserve by Technow Co,.Ltd.
           </MDBox>
           <MDBox
             component="ul"
@@ -91,7 +80,7 @@ function Footer({ light }) {
                 </MDTypography>
               </Link>
             </MDBox> */}
-            <MDBox component="li" px={2} lineHeight={1}>
+            {/* <MDBox component="li" px={2} lineHeight={1}>
               <Link href="https://www.creative-tim.com/presentation" target="_blank">
                 <MDTypography
                   variant="button"
@@ -101,7 +90,7 @@ function Footer({ light }) {
                   About Us
                 </MDTypography>
               </Link>
-            </MDBox>
+            </MDBox> */}
             {/* <MDBox component="li" px={2} lineHeight={1}>
               <Link href="https://www.creative-tim.com/blog" target="_blank">
                 <MDTypography

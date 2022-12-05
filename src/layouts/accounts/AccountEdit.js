@@ -56,6 +56,33 @@ const AccountEdit = () => {
     })
   }
 
+  const resetPassword = (event) => {
+    event.preventDefault()
+    let poo = prompt('New Password')
+    if (poo)
+      if (window.confirm(`Reset Password ? \n ID : ${username} \n Password : ${poo}`)) {
+        axios.post(`${process.env.REACT_APP_API}/account/reset`, {
+          username: username,
+          password: poo
+        }, {
+          headers: {
+            'authorization': `token ${localStorage.getItem('accessToken')}`
+          }
+        })
+          .then(result => {
+            if (!result.data.err) {
+              alert('Success')
+            } else {
+              alert(result.data.err)
+            }
+          })
+          .catch(() => {
+            localStorage.removeItem('accessToken')
+            window.location.href = '/'
+          })
+      }
+  }
+
   useEffect(() => {
     axios.post(`${process.env.REACT_APP_API}/account/edit/get/${username}`, '', {
       headers: {
@@ -101,6 +128,16 @@ const AccountEdit = () => {
                   <Grid item xs={10}>
                     <MDTypography>
                       : {datas?.username}
+                    </MDTypography>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <MDTypography>
+                      PASSWORD
+                    </MDTypography>
+                  </Grid>
+                  <Grid item xs={10}>
+                    <MDTypography>
+                      : <MDBadge badgeContent="RESET" color="warning" variant="gradient" size="sm" onClick={(event) => resetPassword(event)} />
                     </MDTypography>
                   </Grid>
                   <Grid item xs={2}>

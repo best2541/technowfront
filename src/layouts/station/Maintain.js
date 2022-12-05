@@ -18,7 +18,7 @@ function Maintain({ id, ref_no }) {
 
     const createClick = (event) => {
         event.preventDefault()
-        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { ref_no: `${ref_no}|${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}|${new Date().getMinutes()}:${new Date().getHours()}:${new Date().getSeconds()}`, id: id, name: input.name, description: input.description, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
+        axios.post(`${process.env.REACT_APP_API}/station/maintain/new`, { ref_no: `${ref_no || 'manual'}|${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}|${new Date().getMinutes()}:${new Date().getHours()}:${new Date().getSeconds()}`, id: id, name: input.name, description: input.description, file: draftToHtml(convertToRaw(editorState.getCurrentContent())) }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
@@ -46,6 +46,7 @@ function Maintain({ id, ref_no }) {
                 xhr.open('POST', `${process.env.REACT_APP_API}/station/maintain/img/upload`);
                 xhr.setRequestHeader('authorization', `token ${localStorage.getItem('accessToken')}`);
                 const data = new FormData();
+                data.append('url',process.env.REACT_APP_API)
                 data.append('file', file);
                 xhr.send(data);
                 xhr.addEventListener('load', () => {

@@ -56,9 +56,11 @@ function Ticket() {
                 {data?.user}
             </MDTypography>,
             action: <>
-                <MDTypography className='m-1' component="a" href={`/ticket/detail/${data.station_id}`} variant="caption" color="text" fontWeight="medium">
-                    Show
-                </MDTypography>
+                <Link to={`/ticket/detail/${data.station_id}`}>
+                    <MDTypography className='m-1' component="a" href={`/ticket/detail/${data.station_id}`} variant="caption" color="text" fontWeight="medium">
+                        Show
+                    </MDTypography>
+                </Link>
             </>
         }
 
@@ -76,10 +78,10 @@ function Ticket() {
                 window.localStorage.removeItem('accessToken')
             }
         })
-        .catch(() => {
-            localStorage.removeItem('accessToken')
-            window.location.href = '/'
-        })
+            .catch(() => {
+                localStorage.removeItem('accessToken')
+                window.location.href = '/'
+            })
     }, [])
     return (
         <MDBox pt={6} pb={3}>

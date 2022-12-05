@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useState, useRef } from 'react'
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -7,6 +8,7 @@ import BuildIcon from '@mui/icons-material/Build';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import ArticleIcon from '@mui/icons-material/Article';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -21,13 +23,17 @@ import MaintainList from './MaintainList';
 import Cctv from './Cctv';
 import CctvList from './CctvList';
 import Ticket from './Ticket';
-import MDTypography from 'components/MDTypography';
+// import MDTypography from 'components/MDTypography';
+import Options from './Options';
 
 const StationEdit = () => {
     const [input, setInput] = useState([])
-    const [button, setButton] = useState(0)
-    const [display, setDisplay] = useState({ contract: false, maintain: false })
+    const [images, setImages] = useState([])
+    // const [button, setButton] = useState(0)
+    const [display, setDisplay] = useState({ contract: false, maintainList: false })
+    const [options, setOptions] = useState([])
     const { id } = useParams()
+    const buttonRef = useRef()
 
     const inputChange = (event) => {
         const { name, value } = event.target
@@ -46,7 +52,8 @@ const StationEdit = () => {
             url: input?.url,
             long: input?.long,
             lati: input?.lati,
-            key: input?.key
+            key: input?.key,
+            remote: input?.remote
         }, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
@@ -79,17 +86,37 @@ const StationEdit = () => {
     const uploadImg = async (event) => {
         // await setInput({ ...input, img: null })
         let formData = new FormData()
-        formData.append('img_name', id)
+        formData.append('img_name', id + images.length)
         formData.append('file', event.target.files[0])
-        axios.post(`${process.env.REACT_APP_API}/station/updateImg/${id}`, formData, {
-            headers: {
-                'authorization': `token ${localStorage.getItem('accessToken')}`
-            }
-        }).then(result => window.location.reload())
-            .catch((err) => {
-                localStorage.removeItem('accessToken')
-                window.location.href = '/'
+        if (window.confirm('Upload image ?')) {
+            axios.post(`${process.env.REACT_APP_API}/station/updateImg/${id}`, formData, {
+                headers: {
+                    'authorization': `token ${localStorage.getItem('accessToken')}`
+                }
+                // }).then(result => setImages([...images, result.data]))
+            }).then(result => window.location.reload())
+                .catch((err) => {
+                    localStorage.removeItem('accessToken')
+                    window.location.href = '/'
+                })
+        }
+    }
+    const deleteImg = async (id, name) => {
+        if (window.confirm('Delete this Image ??')) {
+            axios.post(`${process.env.REACT_APP_API}/station/deleteImg`, {
+                id: id,
+                name: name
+            }, {
+                headers: {
+                    'authorization': `token ${localStorage.getItem('accessToken')}`
+                }
+            }).then(result => {
+                if (!result.data.err) {
+                    setImages(images.filter(image => image.id != id))
+                } else
+                    console.log(result.data)
             })
+        }
     }
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/station/get/${id}`, {
@@ -98,8 +125,10 @@ const StationEdit = () => {
             }
         }).then(result => {
             if (!result.data.err) {
+                setOptions(result.data.options)
+                setImages(result.data.images)
                 setInput(result.data.stations[0])
-                setButton(result.data.stations[0]?.status)
+                // setButton(result.data.stations[0]?.status)
             }
         })
             .catch(() => {
@@ -124,11 +153,34 @@ const StationEdit = () => {
                             mb={1}
                             textAlign="center"
                         >
-                            {input?.img &&
-                                <img
-                                    src={`${process.env.REACT_APP_API}/img/${input?.img}`}
-                                    style={{ 'maxWidth': '100%', 'maxHeight': '500px' }}
-                                />
+                            <span style={{ 'position': 'absolute', 'left': '110px', 'color': 'yellow', 'fontSize': '12px' }}
+                                onClick={() => buttonRef.current.click()}
+                            >Add
+                            </span>
+                            {images.length > 0 &&
+                                <Carousel
+                                    autoPlay
+                                    infiniteLoop
+                                    showThumbs={false}
+                                    showIndicators={false}
+                                >
+                                    {images.map((image) => (
+                                        <div key={image.img}>
+                                            <span style={{ 'position': 'absolute', 'left': '30px', 'color': 'red', 'fontSize': '12px' }}
+                                                onClick={() => deleteImg(image.id, image.img)}
+                                            >Delete
+                                            </span>
+                                            <span style={{ 'position': 'absolute', 'left': '70px', 'color': 'yellow', 'fontSize': '12px' }}
+                                                onClick={() => buttonRef.current.click()}
+                                            >Add
+                                            </span>
+                                            <img
+                                                src={`${process.env.REACT_APP_API}/img/${image?.img}`}
+                                                style={{ 'maxWidth': '90%', width: 'auto', 'maxHeight': '500px' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </Carousel>
                             }
                         </MDBox>
                         {input?.id &&
@@ -160,6 +212,9 @@ const StationEdit = () => {
                                             </MDBox>
                                         </Grid>
                                     </Grid>
+                                    <MDBox mb={2}>
+                                        <MDInput name='remote' type="text" label="Remote Url" variant="standard" value={input.remote} fullWidth onChange={inputChange} />
+                                    </MDBox>
                                     <Grid container spacing={3}>
                                         <Grid item xs={6}>
                                             <MDBox mb={2}>
@@ -174,14 +229,14 @@ const StationEdit = () => {
                                     </Grid>
                                 </MDBox>
                                 <MDBox>
-                                    <span><MDTypography component='span'>IMG : </MDTypography></span>
+                                    {/* <span><MDTypography component='span'>IMG : </MDTypography></span> */}
                                     {/* {input[0].img &&
                                         <img
                                             src={`${process.env.REACT_APP_API}${input[0]?.img}`}
                                             style={{ 'maxWidth': '100%', 'maxHeight': '500px' }}
                                         />
                                     } */}
-                                    <input name='img' type="file" accept="image/*" style={{ color: 'white' }} onChange={(event) => uploadImg(event)} />
+                                    <input ref={buttonRef} name='img' type="file" accept="image/*" style={{ color: 'white', display: 'none' }} onChange={(event) => uploadImg(event)} />
                                 </MDBox>
                                 {display?.contractList &&
                                     <>
@@ -225,6 +280,12 @@ const StationEdit = () => {
                                         <Maintain id={id} ref_no={display.ref_no} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
+                                {display?.options &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, options: false })}>
+                                        </div>
+                                        <Options onClick={(event) => event.stopPropagation()} />
+                                    </>}
                                 <MDBox mt={3} mb={1}>
                                     <div style={{ 'display': 'flex', 'justifyContent': 'space-around' }}>
                                         <div>
@@ -234,6 +295,9 @@ const StationEdit = () => {
                                         <div>
                                             <MDButton variant='gradient' color='warning' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, cctvList: true })}><CameraAltIcon />CCTV</MDButton>
                                             <MDButton variant='gradient' color='warning' onClick={() => setDisplay({ ...display, cctv: true })}><AddIcon />Add</MDButton>
+                                        </div>
+                                        <div>
+                                            <MDButton variant='gradient' color='info' onClick={() => window.open(`https://${input.remote.split('http://' && 'https://').pop()}`)}>Remote</MDButton>
                                         </div>
                                         <div>
                                             <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}><BuildIcon />Maintain Log</MDButton>
@@ -257,7 +321,7 @@ const StationEdit = () => {
                 </Grid>
             </Grid>
             <br />
-            <Ticket id={id} setDisplay={setDisplay} />
+            <Ticket id={id} setDisplay={setDisplay} options={options} />
         </MDBox >
     )
 }

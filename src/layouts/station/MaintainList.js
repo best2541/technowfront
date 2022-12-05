@@ -9,6 +9,7 @@ const columns = [
     { Header: "สิ่งที่ซ่อม", accessor: "name", align: "left" },
     { Header: "สิ่งที่เปลี่ยน", accessor: "description", align: "left" },
     { Header: "วันที่", accessor: "create_date", align: "center" },
+    { Header: "ผู้ซ่อม", accessor: "sign", align: "center" },
     { Header: "action", accessor: "action", align: "center" },
 ]
 
@@ -22,6 +23,7 @@ function MaintainList({ id }) {
             name: data.name,
             description: data.description,
             create_date: new Date(data.create_date).toLocaleString('th'),
+            sign: data.sign,
             action: <span><a href='#' onClick={() => setSelect(data.id)}>ดูรายละเอียด</a></span>
         }
     })

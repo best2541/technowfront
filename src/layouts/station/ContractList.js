@@ -6,7 +6,9 @@ import { useMaterialUIController } from "context";
 
 const columns = [
     { Header: "Create Date", accessor: "create_date", align: "left" },
-    { Header: "EXP", accessor: "exp", align: "left" },
+    { Header: "หมายเหตุ", accessor: "remark", align: "left" },
+    { Header: "วันที่เริ่ม", accessor: "start", align: "left" },
+    { Header: "วันที่สิ้นสุด", accessor: "exp", align: "left" },
     { Header: "action", accessor: "action", align: "center" },
 ]
 
@@ -15,15 +17,19 @@ function ContractList({ id }) {
 
     const row = datas.map(data => ({
         create_date: new Date(data.create_date).toLocaleString('th'),
+        start: data.start ? new Date(data.start).toLocaleDateString('th') : '',
+        remark: data.remark,
         exp: new Date(data.exp).toLocaleDateString('th'),
-        action: <a target='_blank' href={`http://localhost:3001/img/contract/${data?.file}`}>ดูสัญญา</a>
+        action: <a target='_blank' href={`${process.env.REACT_APP_API}/img/contract/${data?.file}`}>ดูสัญญา</a>
     }))
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/station/contract/get/${id}`, {
             headers: {
                 'authorization': `token ${localStorage.getItem('accessToken')}`
             }
-        }).then(result => setDatas(result.data?.contract))
+        }).then(result => {
+            setDatas(result.data?.contract)
+        })
             .catch(() => {
                 localStorage.removeItem('accessToken')
                 window.location.href = '/'
@@ -44,7 +50,7 @@ function ContractList({ id }) {
                     {/* <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
                         <span><label>วันที่ลงทะเบียน : {new Date(data.create_date).toLocaleString('th')}</label></span>
                         <span><label>วันหมดสัญญา : {new Date(data.exp).toLocaleDateString('th')}</label></span>
-                        <span><a target='_blank' href={`http://localhost:3001/img/contract/${data?.file}`}>ดูสัญญา</a></span>
+                        <span><a target='_blank' href={`${process.env.REACT_APP_API}/img/contract/${data?.file}`}>ดูสัญญา</a></span>
                     </div> */}
                 </>
             }

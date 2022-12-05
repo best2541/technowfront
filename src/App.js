@@ -105,6 +105,7 @@ export default function App() {
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
+    document.title = 'TECHNOW'
   }, [direction]);
 
   // Setting page scroll to 0 when changing the route

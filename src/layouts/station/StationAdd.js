@@ -29,6 +29,7 @@ const StationAdd = () => {
     formData.append('long', input?.long || 0)
     formData.append('lati', input?.lati || 0)
     formData.append('key', input?.key || '')
+    formData.append('remote', input?.remote || '')
     formData.append('img_name', input.name)
     formData.append('file', input?.img)
     axios.post(`${process.env.REACT_APP_API}/station/new`, formData, {
@@ -87,6 +88,9 @@ const StationAdd = () => {
                       </MDBox>
                     </Grid>
                   </Grid>
+                  <MDBox mb={2}>
+                    <MDInput name='remote' type="text" label="Remote Url" variant="standard" value={input.remote} fullWidth onChange={inputChange} />
+                  </MDBox>
                   <Grid container spacing={3}>
                     <Grid item xs={6}>
                       <MDBox mb={2}>

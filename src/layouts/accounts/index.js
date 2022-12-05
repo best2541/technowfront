@@ -52,9 +52,11 @@ function Accounts() {
         <MDBadge badgeContent={data.role == 1 ? 'monitor' : 'maintainance'} color={data.role == 1 ? 'success' : 'warning'} variant="gradient" size="sm" />
       </MDBox>,
       action: <>
-        <MDTypography className='m-1' component="a" href={`/accounts/edit/${data.username}`} variant="caption" color="text" fontWeight="medium">
-          Edit
-        </MDTypography>
+        <Link to={`/accounts/edit/${data.username}`}>
+          <MDTypography className='m-1' component="a" href={`/accounts/edit/${data.username}`} variant="caption" color="text" fontWeight="medium">
+            Edit
+          </MDTypography>
+        </Link>
         <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.username)} variant="caption" color="text" fontWeight="medium">
           Delete
         </MDTypography>

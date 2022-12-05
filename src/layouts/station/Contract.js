@@ -14,6 +14,8 @@ function Contract({ id
         let formData = new FormData()
         formData.append('station_id', id)
         formData.append('exp', input?.exp)
+        formData.append('start', input?.start)
+        formData.append('remark', input?.remark)
         formData.append('file', input.file)
         axios.post(`${process.env.REACT_APP_API}/station/contract/new`, formData, {
             headers: {
@@ -29,7 +31,9 @@ function Contract({ id
         <div className={useMaterialUIController()[0].darkMode ? 'box' : 'white-box'}>
             <form onSubmit={createClick}>
                 <label>สัญญา : </label> <input type='file' onChange={(event) => setInput({ ...input, file: event.target.files[0] })} required />
+                <MDInput type='text' label='หมายเหตุ' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setInput({ ...input, remark: event.target.value })} fullWidth />
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
+                    <span><label>วันที่เริ่มสัญญา : </label> <MDInput type='date' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setInput({ ...input, start: event.target.value })} required /></span>
                     <span><label>วันที่หมดสัญญา : </label> <MDInput type='date' variant="standard" style={{ 'backgroundColor': 'transparent', 'color': 'white' }} onChange={(event) => setInput({ ...input, exp: event.target.value })} required /></span>
                 </div>
                 <MDButton type='submit' style={{ position: 'absolute', bottom: 0, left: 0 }} color='success' fullWidth>New</MDButton>

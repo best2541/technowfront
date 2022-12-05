@@ -47,7 +47,8 @@ const RecordDetail = () => {
     // test.unshift({ Header: 'date', accessor: 'create_date', align: 'center' })
 
     const rows = callback.map(call => {
-        const set = JSON.parse(call?.callback)
+        const set = { create_date: new Date(call.create_date).toLocaleString('th'), ...JSON.parse(call?.callback) }
+        // set.create_date = new Date(call.create_date).toLocaleString('th')
         Object.keys(set).map(s => {
             form.map(f => {
                 if (f.type == 2 && f.key == s) {
@@ -55,14 +56,20 @@ const RecordDetail = () => {
                 }
             })
         })
-        set.create_date = new Date(call.create_date).toLocaleString('th')
         return set
     }
     )
 
     let dataSet = [{ columns: [], data: [] }]
     demo.map(data => dataSet[0].columns.push(data.Header))
-    rows.map((data, index) => dataSet[0].data.push(Object.values(data)))
+    rows.map((data) => {
+        if (Object.keys(data) == 'create_date') {
+            dataSet[0].data.unshift(Object.values(data))
+        } else {
+            console.log((data))
+            dataSet[0].data.push(Object.values(data))
+        }
+    })
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_API}/record/detail/${id}`, { since: since.since, to: since.to }, {
             headers: {
@@ -126,7 +133,7 @@ const RecordDetail = () => {
                                         id="datetime-local"
                                         label="since"
                                         type="datetime-local"
-                                        defaultValue={`${since.since.getFullYear()}-${since.since.getMonth() < 10 && '0'}${since.since.getMonth()}-${since.since.getDate() < 10 && '0'}${since.since.getDate()}T${since.since.getHours()}:${since.since.getMinutes()}`}
+                                       // defaultValue={`${since.since?.getFullYear()}-${since.since?.getMonth() < 10 && '0'}${since.since?.getMonth()}-${since.since?.getDate() < 10 && '0'}${since.since?.getDate()}T${since.since?.getHours()}:${since.since?.getMinutes()}`}
                                         onChange={(event) => setSince({ ...since, since: event.target.value })}
                                         sx={{ width: 250 }}
                                         InputLabelProps={{
@@ -139,7 +146,7 @@ const RecordDetail = () => {
                                         id="datetime-local"
                                         label="to"
                                         type="datetime-local"
-                                        defaultValue={`${since.to.getFullYear()}-${since.to.getMonth() < 10 && '0'}${since.to.getMonth()}-${since.to.getDate() < 10 && '0'}${since.to.getDate()}T${since.to.getHours()}:${since.to.getMinutes()}`}
+                                        //defaultValue={`${since.to?.getFullYear()}-${since.to?.getMonth() < 10 && '0'}${since.to?.getMonth()}-${since.to?.getDate() < 10 && '0'}${since.to?.getDate()}T${since.to?.getHours()}:${since.to?.getMinutes()}`}
                                         onChange={(event) => setSince({ ...since, to: event.target.value })}
                                         sx={{ width: 250 }}
                                         InputLabelProps={{

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -15,14 +16,17 @@ import MDButton from "components/MDButton";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Maintain from './Maintain';
+import Contract from './Contract';
 import ContractList from './ContractList';
 import MaintainList from './MaintainList';
+import Cctv from './Cctv';
 import CctvList from './CctvList';
 import Ticket from './Ticket';
 
 const MaintainStationEdit = () => {
     const [input, setInput] = useState([])
-    const [button, setButton] = useState(0)
+    const [images, setImages] = useState([])
+    // const [button, setButton] = useState(0)
     const [display, setDisplay] = useState({ contract: false, maintain: false })
     const { id } = useParams()
     const contract = window.localStorage.getItem('contract')
@@ -52,9 +56,9 @@ const MaintainStationEdit = () => {
             }
         }).then(result => {
             if (!result.data.err) {
-                console.log(result.data)
+                setImages(result.data.images)
                 setInput(result.data.stations[0])
-                setButton(result.data.stations[0]?.status)
+                // setButton(result.data.stations[0]?.status)
             }
         })
             .catch(() => {
@@ -79,11 +83,22 @@ const MaintainStationEdit = () => {
                             mb={1}
                             textAlign="center"
                         >
-                            {input?.img &&
-                                <img
-                                    src={`${process.env.REACT_APP_API}/img/${input?.img}`}
-                                    style={{ 'maxWidth': '100%', 'maxHeight': '500px' }}
-                                />
+                            {images.length > 0 &&
+                                <Carousel
+                                    autoPlay
+                                    infiniteLoop
+                                    showThumbs={false}
+                                    showIndicators={false}
+                                >
+                                    {images.map((image) => (
+                                        <div key={image.img}>
+                                            <img
+                                                src={`${process.env.REACT_APP_API}/img/${image?.img}`}
+                                                style={{ 'maxWidth': '90%', width: 'auto', 'maxHeight': '500px' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </Carousel>
                             }
                             {/* <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
                                 Create New Station
@@ -91,7 +106,14 @@ const MaintainStationEdit = () => {
                         </MDBox>
                         {input?.id &&
                             <MDBox pt={4} pb={3} px={3}>
-                                <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Logs</MDButton>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <MDButton variant='text' href={`/record/detail/${id}`} fullWidth>Records</MDButton>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <MDButton variant='text' href={`/ticket/detail/${id}`} fullWidth>Tickets</MDButton>
+                                    </Grid>
+                                </Grid>
                                 <MDBox component="form" role="form">
                                     <MDBox mb={2}>
                                         <MDInput name='name' type="text" label="Station Name" variant="standard" value={input.name} fullWidth />
@@ -121,11 +143,25 @@ const MaintainStationEdit = () => {
                                         <ContractList id={id} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
+                                {display?.contract &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, contract: false })}>
+                                        </div>
+                                        <Contract id={id} onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
                                 {display?.cctvList &&
                                     <>
                                         <div className='overlay' onClick={() => setDisplay({ ...display, cctvList: false })}>
                                         </div>
                                         <CctvList id={id} onClick={(event) => event.stopPropagation()} />
+                                    </>
+                                }
+                                {display?.cctv &&
+                                    <>
+                                        <div className='overlay' onClick={() => setDisplay({ ...display, cctv: false })}>
+                                        </div>
+                                        <Cctv id={id} onClick={(event) => event.stopPropagation()} />
                                     </>
                                 }
                                 {display?.maintainList &&
@@ -167,6 +203,7 @@ const MaintainStationEdit = () => {
                                         {maintain > 0 &&
                                             <div>
                                                 <MDButton variant='gradient' color='secondary' style={{ 'marginRight': '5px' }} onClick={() => setDisplay({ ...display, maintainList: true })}><BuildIcon />Maintain Log</MDButton>
+                                                <MDButton variant='gradient' color='secondary' onClick={() => setDisplay({ ...display, maintain: true })}><AddIcon />Add</MDButton>
                                             </div>
                                         }
                                         {/* {maintain > 1 &&

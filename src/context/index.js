@@ -80,7 +80,7 @@ function MaterialUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
-    darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches ? true : false,
+    darkMode: window?.localStorage?.getItem('theme') ? window?.localStorage?.getItem('theme') == 'true' ? true : false : window.matchMedia('(prefers-color-scheme: dark)').matches ? true : false,
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);

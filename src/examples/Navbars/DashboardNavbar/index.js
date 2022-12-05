@@ -142,34 +142,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <MDBox pr={1}>
               <div>
                 <MDInput label="Search here" onKeyPress={searchEnter} />
-                {/* <ul style={{
-                  position: 'absolute',
-                  top: 50,
-                  justifyContent: "normal",
-                  fontSize: 20,
-                  color: "blue",
-                  margin: 1,
-                  width: "170px",
-                  BorderColor: "green",
-                  borderWidth: "10px",
-                  backgroundColor: 'gray',
-                  zIndex: '99'
-                }}>
-                  <li>sdlfkj</li>
-                  <li>sdlfkj</li>
-                  <li>sdlfkj</li>
-                  <li>sdlfkj</li>
-                  <li>sdlfkj</li>
-                  <li>sdlfkj</li>
-                </ul> */}
               </div>
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              {/* <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link> */}
               <IconButton
                 size="small"
                 disableRipple
@@ -190,6 +165,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon sx={iconsStyle}>settings</Icon>
               </IconButton>
+              <Link to="/authentication/sign-in/basic">
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  <Icon sx={iconsStyle}>account_circle</Icon> <span style={{ 'color': darkMode ? "white" : "inherit" }}> {window.localStorage.getItem('remember')}</span>
+                </IconButton>
+              </Link>
               {/* <IconButton
                 size="small"
                 disableRipple

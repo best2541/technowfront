@@ -62,9 +62,11 @@ function Station() {
                 {data?.tel}
             </MDTypography>,
             action: <>
-                <MDTypography className='m-1' component="a" href={`/station/edit/${data.id}`} variant="caption" color="text" fontWeight="medium">
-                    Show
-                </MDTypography>
+                <Link to={`/station/edit/${data.id}`}>
+                    <MDTypography className='m-1' component="a" href={`/station/edit/${data.id}`} variant="caption" color="text" fontWeight="medium">
+                        Show
+                    </MDTypography>
+                </Link>
                 <MDTypography className='m-1' component="a" onClick={(event) => deleteClick(data.id)} variant="caption" color="text" fontWeight="medium">
                     {window.localStorage.getItem('role') == '1' ? 'Delete' : ''}
                 </MDTypography>
