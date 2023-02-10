@@ -129,6 +129,8 @@ const StationEdit = () => {
                 setImages(result.data.images)
                 setInput(result.data.stations[0])
                 // setButton(result.data.stations[0]?.status)
+            } else {
+                console.log(result.data)
             }
         })
             .catch(() => {

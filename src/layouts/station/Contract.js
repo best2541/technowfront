@@ -15,7 +15,7 @@ function Contract({ id
         formData.append('station_id', id)
         formData.append('exp', input?.exp)
         formData.append('start', input?.start)
-        formData.append('remark', input?.remark)
+        formData.append('remark', input.remark)
         formData.append('file', input.file)
         axios.post(`${process.env.REACT_APP_API}/station/contract/new`, formData, {
             headers: {
